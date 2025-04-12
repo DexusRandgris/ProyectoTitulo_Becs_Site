@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Iniciar Sesión</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/inicio_sesion_styles.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
+</head>
+
+<body class='snippet-body'>
+    <div class="wrapper bg-white">
+        <div class="h2 text-center">Gati Gourmet</div>
+        <div class="h4 text-muted text-center pt-2">Ingresa tus datos</div>
+
+        <form class="form-control" action="{% url 'iniciosesion' %}" method="POST" id="formularioInicioSesion">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <div class="input-group">
+                    <div class="input-field">
+                        <span class="fas fa-user p-2"></span>
+                    </div>
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <div class="input-group">
+                    <div class="input-field">
+                        <span class="fas fa-lock p-2"></span>
+                    </div>
+                    {{ form.password }}
+                    <div class="input-field">
+                        <button type="button" id="alternarContraseña" class="btn bg-white text-muted"> 
+                            <span class="far fa-eye-slash"></span> 
+                        </button> 
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-block text-center my-3 btn-primary">Iniciar sesión</button>
+            <div class="d-flex align-items-start">
+                <div class="remember"> <label class="option text-muted"> Recordar mis datos <input type="radio" name="radio"> <span class="checkmark"></span> </label> </div>
+                <div class="ml-auto"> <a href="{% url 'password_reset' %}" id="olvidoContraseña">¿Olvidaste tu contraseña?</a> </div>
+            </div>
+            </div>
+            <div class="text-center pt-3 text-muted">¿No eres miembro? <a href="{% url 'registrar' %}">Regístrate</a></div>
+            
+        </form>
+    </div>
+
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js'></script>
+    <script>
+    document.getElementById('alternarContraseña').addEventListener('click', function() {
+        var contraseña = document.getElementById('id_password');
+        var iconoContraseña = document.querySelector('#alternarContraseña > span');
+
+        if (contraseña.type === 'password') {
+            contraseña.type = 'text';
+            iconoContraseña.classList.remove('fa-eye-slash');
+            iconoContraseña.classList.add('fa-eye');
+        } else {
+            contraseña.type = 'password';
+            iconoContraseña.classList.remove('fa-eye');
+            iconoContraseña.classList.add('fa-eye-slash');
+        }
+    });
+    </script>
+
+</body>
+
+</html>
+{% endblock %}
