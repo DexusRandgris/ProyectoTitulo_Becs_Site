@@ -1,11 +1,61 @@
+{% extends "header.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../static/css/style_index.css">
+    <title>Inicio</title>
 </head>
 <body>
-    
+    <h3 align="center">Carrusel de imagenes</h3>
+    <div class="txt-productos">
+        <h1 align="center" class="titulo-contenedor">Nuestros productos</h1>
+    </div>
+    <h3 align="center">Productos</h3>
+    <div class="opiniones">
+        <h1 align="center" class="titulo-contenedor">Opiniones de nuestros clientes</h1>
+        <div class="contenedor-opinion">
+            <div class="op">
+                <div class="img-cliente">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icono" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </div>
+                <div class="cont-op">
+                    <h4>Valentina Lopez</h4>
+                    <p>"¡Delicios y frescos! Los frutos secos que compré son de excelente calidad. Definitivamente volvere a comprar."</p>
+                </div>
+            </div>
+            <div class="op">
+                <div class="img-cliente">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icono" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </div>
+                <div class="cont-op">
+                    <h4>Juan Pérez</h4>
+                    <p>"Estoy muy feliz con mi compra. Los frutos secos llegaron en perfecto estado y se sienten super frescos.¡Lo recomeido al 100%!"</p>
+                </div>
+            </div>
+            <div class="op">
+                <div class="img-cliente">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icono" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </div>
+                <div class="cont-op">
+                    <h4>Carlos Martínez</h4>
+                    <p>"Nunca había probado algo tan sabroso. Ahora los llevo a todas partes como snack. Excelente calidad."</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+{% endblock %}

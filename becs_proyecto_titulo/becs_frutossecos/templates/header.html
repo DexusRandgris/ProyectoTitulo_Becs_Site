@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style_header.css">
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+    <title>Document</title>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="../static/img/logobecs.jpg" alt="Logo Becs" class="logo">
+            <h3>Becs Frutos Secos y Condimentos</h3>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'inicio' %}"><button>Incio</button></a></li>
+                <li><a href="/"><button>Tienda</button></a></li>
+                <li><a href="/"><button>Despacho</button></a></li>
+                <li><a href="/"><button>Quienes somos</button></a></li>
+                <li><a href="/"><button>Contacto</button></a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
