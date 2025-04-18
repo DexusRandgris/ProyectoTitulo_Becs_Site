@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,800;1,800&display=swap');
+
+/* Reseteo genelar, comienza sin ajustes por defecto*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ajuste principal de header */
+.header{
+    background-color: #734A3C;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    font-family: 'Nunito', sans-serif;
+    justify-content: space-between;
+}
+
+/* Ajuste del logo */
+.header .logo img{
+    height: 70px;
+    width: auto;
+    border-radius: 20px;
+}
+
+.logo{
+    display: flex;
+    margin-right: 20px;
+}
+
+.logo h3{
+    font-size: 25px;
+    color: white;
+    margin: 20px 0;
+}
+
+/* Botones de navegacion */
+.header .nav-links{
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.header .nav-links button {
+    background-color: transparent; 
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    font-size: 18px;
+}
+
+.header .nav-links button:hover {
+    background-color: #ea9463; /* un pequeño efecto visual */
+}
