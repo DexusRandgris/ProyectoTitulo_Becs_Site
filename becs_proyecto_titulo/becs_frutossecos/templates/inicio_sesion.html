@@ -1,80 +1,96 @@
-
+{% extends "base.html" %}
+{% block content %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Iniciar Sesión</title>
-    <link href='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
     <link rel="stylesheet" href="{% static 'css/inicio_sesion_styles.css' %}">
-    <link rel="shortcut icon" href="img/logo.png">
-</head>
+  <!-- MAIN -->
+  <main class="bg-light py-5">
+    <div class="container">
+      <h1 class="text-center mb-4" style="color:#6B4F3A; font-weight:bold;">Acceder</h1>
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm">
+            <div class="card-header text-center" style="background-color:#DDB892;">
+              <h2 class="m-0" style="color:#6B4F3A;">Inicia Sesión</h2>
+            </div>
+            <div class="card-body" style="background-color:#A17E62;">
+              <form action="#" method="post" id="loginForm">
+                {% csrf_token %}
 
-<body class='snippet-body'>
-    <div class="wrapper bg-white">
-        <div class="h2 text-center">Becs Frutos Secos</div>
-        <div class="h4 text-muted text-center pt-2">Ingresa tus datos</div>
+                {% if form.errors %}
+                  <div class="alert alert-danger">
+                    <ul class="mb-0">
+                      {% for field in form %}
+                        {% for error in field.errors %}
+                          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
 
-        <form class="form-control" action="iniciosesion" method="POST" id="formularioInicioSesion">
-            {% csrf_token %}
-            <div class="form-group mb-3">
-                <div class="input-group">
-                    <div class="input-field">
-                        <span class="fas fa-user p-2">Usuario</span>
-                    </div>
-
-                    {{ form.username }}
+                <div class="mb-3">
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
+                    <input type="email"
+                           name="username"
+                           id="id_username"
+                           class="form-control"
+                           placeholder="Dirección de correo electrónico"
+                           required>
+                  </div>
                 </div>
-            </div>
-            <div class="form-group mb-3">
-                <div class="input-group">
-                    <div class="input-field">
-                        <span class="fas fa-lock p-2"></span>
-                        <div class="input-field-btn ">
-                            <button type="button" id="alternarContraseña" class="btn bg-white text-muted"> 
-                                <span class="far fa-eye-slash"></span> 
-                            </button> 
-                        </div>
-                    </div>
-                    {{ form.password }}
-                
+
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
+                    <input type="password"
+                           name="password"
+                           id="id_password"
+                           class="form-control"
+                           placeholder="Contraseña"
+                           required>
+                    <button type="button" id="togglePassword" class="btn btn-outline-secondary">
+                      <i class="far fa-eye-slash"></i>
+                    </button>
+                  </div>
                 </div>
-                
+
+                <div class="d-flex justify-content-between">
+                  <button type="submit" class="btn px-4" style="background-color:#6B4F3A; color:#FFF;">
+                    Iniciar sesión
+                  </button>
+                  <a href="#" class="btn px-4" style="background-color:#6B4F3A; color:#FFF;">
+                    Registrarse
+                  </a>
+                </div>
+
+                <p class="text-center mt-3" style="color:#FFF;"> 
+                  ¿Olvidaste tu contraseña? 
+                  <a href="#" style="color:#4EA8F7;">Recupérala aquí</a>.
+                </p>
+              </form>
             </div>
-            <button type="submit" class="btn btn-block text-center my-3 btn-primary">Iniciar sesión</button>
-            <div class="d-flex align-items-start">
-                <div class="remember"> <label class="option text-muted"> Recordar mis datos <input type="radio" name="radio"> <span class="checkmark"></span> </label> </div>
-                <div class="ml-auto"> <a href="password_reset" id="olvidoContraseña">¿Olvidaste tu contraseña?</a> </div>
-            </div>
-            </div>
-            <div class="text-center pt-3 text-muted">¿No eres miembro? <a href="registrar">Regístrate</a></div>
-            
-        </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
-    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js'></script>
-    <script>
-    document.getElementById('alternarContraseña').addEventListener('click', function() {
-        var contraseña = document.getElementById('id_password');
-        var iconoContraseña = document.querySelector('#alternarContraseña > span');
-
-        if (contraseña.type === 'password') {
-            contraseña.type = 'text';
-            iconoContraseña.classList.remove('fa-eye-slash');
-            iconoContraseña.classList.add('fa-eye');
-        } else {
-            contraseña.type = 'password';
-            iconoContraseña.classList.remove('fa-eye');
-            iconoContraseña.classList.add('fa-eye-slash');
-        }
+ 
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+  <script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordField = document.querySelector('#id_password');
+    togglePassword.addEventListener('click', function () {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.querySelector('i').classList.toggle('fa-eye');
+      this.querySelector('i').classList.toggle('fa-eye-slash');
     });
-    </script>
+  </script>
 
 </body>
-
 </html>
+{% endblock %}
