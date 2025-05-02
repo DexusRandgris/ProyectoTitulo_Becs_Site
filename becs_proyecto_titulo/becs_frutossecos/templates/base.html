@@ -20,11 +20,27 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="{% url 'inicio' %}"><button>Inicio</button></a></li>
-                <li><a href="/"><button>Tienda</button></a></li>
+                <li><a href="{% url 'tienda' %}"><button>Tienda</button></a></li>
                 <li><a href="/"><button>Despacho</button></a></li>
                 <li><a href="/"><button>Quienes somos</button></a></li>
                 <li><a href="/"><button>Contacto</button></a></li>
-                <li><a href="{% url 'iniciosesion' %}"><button>Iniciar Sesión?</button></a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                      </svg>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="#">Bienvenid@ {{ user.first_name }} {{ user.last_name }}</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                      {% else %}
+                        <li><a class="dropdown-item" href="{% url 'iniciosesion' %}">Iniciar sesión</a></li>
+                        <li><a class="dropdown-item" href="{% url 'registrate' %}">Registrarse</a></li>
+                      {% endif %}
+                    </ul>
+                  </li>
+                  
                 <div class="barra-carrito">
                     <div class="contenedor-carrito">
                       <a href="/carrito" class="carrito-link">
@@ -41,5 +57,6 @@
         {% endblock %}
     </main>
     {% include "footer.html" %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

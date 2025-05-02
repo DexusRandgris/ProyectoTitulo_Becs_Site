@@ -11,4 +11,6 @@ urlpatterns = [
     # (opcional) si quieres seguir con /index/
     path('',      views.inicio,        name='inicio'),
     path('carrito/',  views.carrito,      name='carrito'),
+    path('tienda/', views.tiendabecs, name='tienda'),
+    path('salir/', views.salir, name='logout'),
 ]
