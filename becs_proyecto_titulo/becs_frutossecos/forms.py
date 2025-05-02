@@ -3,10 +3,10 @@ from django import forms
 from django.forms import ModelForm
 from .models import Producto, Categoria
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, EmailValidator
 from django.core.exceptions import ValidationError
 import re #importar expresiones regulares (d para buscar numeros)
+from .models import CustomUser
 
 
 validate_only_letters = RegexValidator( #no va con def porque no es un meteodo si no, un objeto de regexvalidator que se utiliza para validar campos de formulario
@@ -15,23 +15,15 @@ validate_only_letters = RegexValidator( #no va con def porque no es un meteodo s
     'invalid')
 
 class CustomAuthenticationForm(forms.Form):
-    username = forms.CharField(max_length=150)
+    email = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
 # definición de los campos del formulario con widgets y atributos requeridos para inicias sesion/registrar
 class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(label="Nombre de Usuario",widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Nombre de Usuario' #esto es lo que se ve como en plomo a la hora de ingresar un dato en el formulario
-    }))
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={
         'class': 'form-control',
         'placeholder': 'Contraseña'
     }))
 class RegistroUserForm(UserCreationForm):
-    username = forms.CharField(label="Nombre de Usuario", widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Nombre de Usuario'
-    }))
     first_name = forms.CharField(label="Nombre",validators=[validate_only_letters], widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Nombre'
@@ -62,23 +54,16 @@ class RegistroUserForm(UserCreationForm):
             if password1 != password2: # si password1 es diferente a password2 entonces:
                 self.add_error('password2', 'Las contraseñas no coinciden') # se manda un mensaje de error que diga que las contraseñas no coinciden
 
-#validacion para ver si el usuario ya esta registrado o no
-    def clean_username(self):
-        username = self.cleaned_data.get('username') #se obtiene el valor limpio (el campo)
-        if User.objects.filter(username=username).exists():# si ya existe un usuario con ese correo electronico entonces:
-            raise ValidationError("Este nombre de usuario ya está tomado") #si existe, se manda con un mensaje de q ya esta tomado
-        return username # y se retorna el campo limpio
-
 #validacion para comprobar si el correo ya esta registrado o no
     def clean_email(self): 
         email = self.cleaned_data.get('email')#se obtiene el campo limpio
-        if User.objects.filter(email=email).exists(): # si ya existe un usuario con ese correo entonces:
+        if CustomUser.objects.filter(email=email).exists(): # si ya existe un usuario con ese correo entonces:
             raise ValidationError("Este correo electrónico ya está registrado.") #se manda el mensaje de error q diga que ya esta asociado
         return email #se retorna el campo limpio
 
     class Meta:
-        model = User
-        fields = [ 'username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        model = CustomUser
+        fields = [ 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 
         
