@@ -1,72 +1,507 @@
+/* ===== Fuentes & Fondo global ===== */
 @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
-html, body{
-    background-color: #E6CCB3 !important;
+html, body {
+  background-color: #E6CCB3 !important;
+  margin: 0;
+  padding: 0;
 }
 
-.txt-productos{
-    background-color: #DEB893;
-    height: 70px;
-    color:#714D37;
+/* ===== Sección Productos & Opiniones ===== */
+.txt-productos {
+  background-color: #DEB893;
+  height: 70px;
+  color: #714D37;
 }
 
-.opiniones{
-    background-color: #DEB893;
-    padding: 10px;
+.opiniones {
+  background-color: #DEB893;
+  padding: 10px;
+  text-align: center;
+}
+
+.titulo-contenedor {
+  color: #714D37;
+  font-family: "Zilla Slab", serif;
+  background-color: #DEB893;
+  margin: 0;
+  padding: 1rem 0;
+}
+
+/* ===== Grid de Opiniones ===== */
+.contenedor-opinion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+/* ===== CARRUSEL ===== */
+.custom-carousel {
+  position: relative;
+  margin-bottom: 2rem;
+  margin-top: -20px;
+}
+.carousel-window {
+  overflow: hidden;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.carousel-slide {
+  min-width: 100%;
+  overflow: hidden;
+}
+.carousel-slide img {
+  display: block;
+  width: 100%;
+  height: 75vh;
+  object-fit: cover;
+  filter: blur(1.6px) brightness(0.8);
+  transition: filter 0.3s ease, transform 0.3s ease;
+  transform: scale(1);
+}
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.7);
+  border: none;
+  font-size: 1.8rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6D452B;
+  z-index: 10;
+}
+.carousel-btn.prev { left: 1rem; }
+.carousel-btn.next { right: 1rem; }
+.carousel-btn:hover { background: rgba(255,255,255,0.9); }
+
+/* ===== HERO: Overlay centrado ===== */
+.carousel-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  padding: 2rem;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  text-align: center;
+  z-index: 20;
+}
+.carousel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #F9ECE0;
+  margin: 0;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+}
+.carousel-cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5A351F;
+  background: #F9ECE0;
+  border: 2px solid #5A351F;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+.carousel-cta:hover {
+  background: #5A351F;
+  color: #F9ECE0;
+  transform: translateY(-2px);
+}
+
+/*Quitar espacio de debajo del carrusel */
+.hero-wrapper,
+.custom-carousel {
+  margin-bottom: 0;
+}
+/*FIN DE CARRUSEL*/
+
+
+
+/* ===== GRID DE PRODUCTOS ===== */
+.productos-grid {
+  padding: 2rem 1rem;
+  background-color: #E6CCB3;
+}
+.grid-titulo {
+  text-align: center;
+  font-family: "Zilla Slab", serif;
+  color: #714D37;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+.grid-contenedor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+.producto {
+  text-align: center;
+}
+.producto img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #cc8e50;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+.producto img:hover {
+  transform: scale(1.05);
+}
+.producto p {
+  margin-top: 0.75rem;
+  font-family: "Zilla Slab", serif;
+  color: #333;
+  font-size: 1rem;
+}
+/*FIN DE GRID DE PRODUCTOS*/
+
+
+/* ===== Sección Opiniones ===== */
+.opiniones {
+    background: none;
+    padding: 0;
     text-align: center;
-}
-
-.titulo-contenedor{
-    color:#714D37;
-    height: auto;
-    font-family: "Zilla Slab", serif;
-    background-color: #DEB893;
-}
+  }
   
-.contenedor-opinion{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.op{
+  .opiniones .titulo-contenedor {
+    background-color: #DEB893;
+    color: #714D37;
+    font-family: "Zilla Slab", serif;
+    margin: 0 0 2rem;
+    padding: 1rem 0;
+  }
+  
+  .contenedor-opinion {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 0 auto 3rem;
+    max-width: 1200px;
+    padding: 0 1rem;
+  }
+  /*tarjeta de opinión*/
+  .op {
+    background-color: #704D39;     /* marrón oscuro */
+    color: #F0E8DC;                /* texto crema claro */
+    border-top: 6px solid #e09567; /* franja de acento */
     border-radius: 12px;
-    padding: 20px;
-    width: 350px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
-    background-color: #704D39;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.op p{
-    font-size: 16px;
-    margin-bottom: 10px;
+  }
+  /* efecto hover */
+  .op:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  /* nombre del cliente */
+  .op h4 {
+    margin: 0 0 0.75rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #F9ECE0;
+  }
+  /* estrellas */
+  .op .stars {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    color: #F5A623;
+    letter-spacing: 0.05em;
+  }
+  
+  /* texto de la cita */
+  .op .quote {
+    margin: 0;
+    font-family: 'Zilla Slab', serif;
+    font-style: italic;
     color: #CFAC90;
-}
+    line-height: 1.6;
+  }
+  
 
-.cont-op{
-    margin-left: 20px;
-}
-
-.op h4{
-    color: #CFAC90;
-}
-
-.img-cliente{
-    width: 90px;
-    height: 200px;
-    background-color: #AA8C74;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
+ /* ===== PRODUCTOS DESTACADOS ===== */
+.destacados {
+    background-color: #E6CCB3;
+    margin-top: 0;
+  }
+  
+  /* Header igual a “Nuestros productos” */
+  .destacados-header {
+    background-color: #DEB893;
+    text-align: center;
+    padding: 1.5rem 1rem;
+  }
+  .destacados-header .grid-titulo {
+    margin: 0;
+    font-family: "Zilla Slab", serif;
+    color: #714D37;
+    font-size: 2.5rem;
+  }
+  .destacados-header .grid-subtitulo {
+    margin: 0.5rem 0 0;
+    font-family: "Zilla Slab", serif;
+    color: #ffffff;
+    opacity: 0.9;
+    font-size: 1rem;
+  }
+  
+  /* Grid: primera columna fija, luego tantos 160px como quepan */
+  .destacados-grid {
+    display: grid;
+    grid-template-columns: 250px repeat(auto-fit, 160px);
+    grid-auto-rows: 200px;  /* altura de cada “fila” */
+    gap: 1.5rem;
+    padding: 2rem 1rem;
     justify-content: center;
-    flex-shrink: 0;
+  }
+  
+  /* — Tarjeta “Revisa más” — */
+  .destacado-more {
+    grid-row: span 2;       /* ocupa dos filas */
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .destacado-more .overlay-text {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    color: #ffffff;
+  }
+  .destacado-more .overlay-text h3 {
+    margin: 0 0 1rem;
+    font-family: "Zilla Slab", serif;
+    font-size: 1.25rem;
+  }
+  .destacado-more .overlay-text .btn {
+    background-color: #6D452B;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+
+  /*Seccion de instagram*/
+
+  /* — Items regulares en cuadrado 160×160 + nombre debajo — */
+  .destacado-item {
+    width: 160px;
+    text-align: center;
+  }
+  .destacado-item img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+  .destacado-item img:hover {
+    transform: scale(1.05);
+  }
+  .destacado-item p {
+    margin: 0.75rem 0 0;
+    font-family: "Zilla Slab", serif;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  /* Responsive: en móvil pasamos a dos columnas flexibles */
+  @media (max-width: 768px) {
+    .destacados-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 180px;
+    }
+    .destacado-more {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      height: 220px;
+    }
+  }
+  /* ===== Sección Instagram ===== */
+.instagram-section {
+    background-color: #FAF7F0;      /* tono suave */
+    padding: 3rem 1rem;
+    margin-top: 2rem;
+  }
+  
+  .instagram-title {
+    font-family: "Zilla Slab", serif;
+    color: #714D37;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  /* Grid responsivo de embeds */
+  .instagram-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Ajustes para que los embeds escalen bien */
+  .instagram-posts blockquote {
+    margin: 0 !important;
+  }
+  .instagram-posts iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* ===== Responsive general ===== */
+@media (max-width: 1200px) {
+  /* Carousel: menos alto en pantallas medianas */
+  .carousel-slide img {
+    height: 50vh;
+  }
+  .carousel-overlay {
+    padding: 1rem;
+    max-width: 90%;
+  }
+  .carousel-title {
+    font-size: 2.2rem;
+  }
 }
 
-.img-cliente .icono{
-    width: 28px;
-    height: 28px;
-    fill: white;
+@media (max-width: 992px) {
+  /* Productos: más columnas pequeñas */
+  .grid-contenedor {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  .producto img {
+    width: 120px;
+    height: 120px;
+  }
+  .producto p {
+    font-size: 0.9rem;
+  }
+
+  /* Opiniones: fuente un poco más pequeña */
+  .op h4 {
+    font-size: 1.1rem;
+  }
+  .op .quote {
+    font-size: 0.95rem;
+  }
+
+  /* Destacados: tarjeta “más” no tan alta */
+  .destacados-grid {
+    grid-auto-rows: 180px;
+  }
+  .destacado-more {
+    height: auto;
+  }
+  .destacado-item {
+    width: 140px;
+  }
+  .destacado-item img {
+    width: 140px;
+    height: 140px;
+  }
 }
+/* ===== Responsive ===== */
+
+/* 1) Ajustes generales de vista */
+@media (max-width: 1200px) {
+    /* Carrusel un poco más bajo en tablets grandes */
+    .carousel-slide img {
+      height: 60vh;
+    }
+  }
+  @media (max-width: 768px) {
+    /* Carrusel aún más bajo en tablets/phones */
+    .carousel-slide img {
+      height: 40vh;
+    }
+    /* Overlay del hero más compacto */
+    .carousel-overlay {
+      padding: 1rem;
+    }
+    .carousel-title {
+      font-size: 2rem;
+    }
+    .carousel-cta {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* 2) Grids a 1 columna en pantallas pequeñas */
+  @media (max-width: 768px) {
+    .grid-contenedor,
+    .contenedor-opinion,
+    .destacados-grid,
+    .instagram-posts {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+    /* Tarjeta “más” ocupa todo el ancho */
+    .destacado-more {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      height: 180px;
+    }
+  }
+  
+  /* 3) Texto de secciones un poco más pequeño en móviles muy estrechos */
+  @media (max-width: 576px) {
+    .titulo-contenedor,
+    .instagram-title,
+    .grid-titulo {
+      font-size: 1.5rem;
+    }
+    .destacados-header .grid-subtitulo {
+      font-size: 0.9rem;
+    }
+    .producto img,
+    .destacado-item img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  

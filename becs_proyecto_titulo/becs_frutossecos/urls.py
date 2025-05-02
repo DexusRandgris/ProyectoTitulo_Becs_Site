@@ -4,8 +4,10 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('login/', views.iniciosesion, name='iniciosesion'),  # Cambié 'login_view' a 'iniciosesion'
-    path('index/', views.inicio, name='inicio'),
-    path('registrate', views.registrar, name='registrate'),
+
+    path('login/',      views.iniciosesion,  name='iniciosesion'),
+    # → http://127.0.0.1:8000/registrate/
+    path('registrate/', views.registrar,     name='registrate'),
+    # (opcional) si quieres seguir con /index/
+    path('',      views.inicio,        name='inicio'),
 ]
