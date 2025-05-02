@@ -10,4 +10,5 @@ urlpatterns = [
     path('registrate/', views.registrar,     name='registrate'),
     # (opcional) si quieres seguir con /index/
     path('',      views.inicio,        name='inicio'),
+    path('carrito/',  views.carrito,      name='carrito'),
 ]

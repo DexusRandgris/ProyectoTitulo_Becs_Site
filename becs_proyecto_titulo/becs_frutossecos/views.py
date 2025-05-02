@@ -48,3 +48,6 @@ def registrar(request):
             return redirect('inicio') 
         data["form"]=formulario           
     return render(request, 'registrate.html',data)
+
+def carrito(request):
+    return render(request, 'carrito.html')

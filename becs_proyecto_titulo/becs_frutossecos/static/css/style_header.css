@@ -63,3 +63,45 @@
 .header .nav-links button:hover {
     background-color: #ea9463; /* un pequeño efecto visual */
 }
+ /*carrito */	
+ .barra-carrito {
+    padding: 10px 0;
+    text-align: center;
+  }
+  .carrito-link {
+    color: #FFF; /* Color del texto */
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.carrito-link:visited {
+    color: #FFF; 
+}
+
+.carrito-link:hover {
+    color: #d8b592; 
+}
+
+.carrito-link:active {
+    color: #FFF; 
+}
+  .contenedor-carrito {
+    display: inline-block;
+  }
+  
+  .carrito-link {
+    color: #FFF; 
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .carrito-link i {
+    margin-right: 8px;
+    font-size: 20px;
+  }
+  
+  .carrito-link:hover {
+    color: #d8b592; 
+  }
