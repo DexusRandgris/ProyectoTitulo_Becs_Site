@@ -1,0 +1,44 @@
+.panel-botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    margin-bottom: 100px;
+  }
+  
+  .grid-botones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto) auto;
+    gap: 70px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .grid-botones > .centrado {
+    grid-column: 1 / 3;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .boton {
+    padding: 20px 20px;
+    font-size: 15px;
+    background:  #e7ae78;
+    color: #6D452B;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: bold; 
+  }
+  
+  .boton:hover {
+    background: #6D452B;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .grande {
+    width: 60%;
+  }
+  

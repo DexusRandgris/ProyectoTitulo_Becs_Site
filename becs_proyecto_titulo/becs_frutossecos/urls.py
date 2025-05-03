@@ -13,4 +13,5 @@ urlpatterns = [
     path('carrito/',  views.carrito,      name='carrito'),
     path('tienda/', views.tiendabecs, name='tienda'),
     path('salir/', views.salir, name='logout'),
+    path('administrador/', views.administrador, name='admin'),
 ]
