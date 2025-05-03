@@ -60,3 +60,6 @@ def tiendabecs (request):
 def salir(request):
     logout(request)
     return redirect('inicio')
+
+def administrador(request):
+    return render(request,'admin.html')
