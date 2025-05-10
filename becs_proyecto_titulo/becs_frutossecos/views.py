@@ -8,17 +8,17 @@ from django.contrib.auth import authenticate,login, logout
 #from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 #from .compra import Carrito
-from .forms import CustomAuthenticationForm,RegistroUserForm
+#from .forms import CustomAuthenticationForm,RegistroUserForm
 from .models import Producto
+from django.shortcuts import render, redirect
+#from .forms import ClienteForm
 
 def inicio (request):
      return render(request, 'index.html')
 
 def iniciosesion (request):
-    if request.method == 'GET':
-        return render(request, 'inicio_sesion.html',{
-            'form': CustomAuthenticationForm()
-        })
+    if request.method == 'GET': 
+        return render(request, 'inicio_sesion.html')
     else:
         user = authenticate(
             request,
@@ -26,29 +26,30 @@ def iniciosesion (request):
             password = request.POST['password']
         )
     if user is None:
-        return render(request,'inicio_sesion.html',{
-            'form':CustomAuthenticationForm(),
-            'error':'Datos incorrectos'
-        })
+        return None
+        #return render(request,'inicio_sesion.html',{
+        #    'form':CustomAuthenticationForm(),
+        #    'error':'Datos incorrectos'
+        #})
     else:
         login(request,user)
         return redirect('inicio')
 
 
 def registrar(request):
-    data={                         
-        'form': RegistroUserForm()
-    }
+    """"
+    data ={'form': ClienteForm()}
     if request.method=="POST":
-        formulario = RegistroUserForm(data=request.POST)
+        formulario = ClienteForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()       
-            user = authenticate(email=formulario.cleaned_data["email"], 
-                    password=formulario.cleaned_data["password1"])
-            login(request,user)
             return redirect('iniciosesion') 
-        data["form"]=formulario           
-    return render(request, 'registrate.html',data)
+        else:
+            data["form"]=formulario
+    else:
+        data["form"] = ClienteForm()
+    """
+    return render(request, 'registrate.html')#,data)
 
 def carrito(request):
     return render(request, 'carrito.html')

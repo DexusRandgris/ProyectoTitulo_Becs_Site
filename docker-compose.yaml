@@ -1,0 +1,28 @@
+services:
+  db:
+    build: ./db
+    ports:
+      - "5436:5432"
+    networks:
+      - becs-proyecto-net
+
+  becs_proyecto_titulo:
+    build: ./becs_proyecto_titulo
+    volumes:
+      - ./becs_proyecto_titulo:/opt/app/becs_proyecto_titulo    
+    environment:
+     - DB_USER=user_becs
+     - DB_PASSWORD=becs123
+     - DB_NAME=database_becs
+     - DB_HOST=db
+     - DB_PORT=5432
+
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"       
+    networks:
+      - becs-proyecto-net
+
+networks:
+  becs-proyecto-net:

@@ -14,4 +14,5 @@ urlpatterns = [
     path('tienda/', views.tiendabecs, name='tienda'),
     path('salir/', views.salir, name='logout'),
     path('administrador/', views.administrador, name='admin'),
+    path('admin/', admin.site.urls),
 ]
