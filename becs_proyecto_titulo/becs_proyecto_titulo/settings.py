@@ -14,7 +14,15 @@ from pathlib import Path
 import os 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+#LIBRERIA PARA CARGAR VARIABLES DESDE ARCHIVO, POR DEFECTO SE USARA .env
+from dotenv import load_dotenv
+load_dotenv()
 
+DB_USER=os.getenv('DB_USER')
+DB_PASSWORD=os.getenv('DB_PASSWORD')
+DB_NAME=os.getenv('DB_NAME')
+DB_HOST=os.getenv('DB_HOST')
+DB_PORT=os.getenv('DB_PORT')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -77,11 +85,11 @@ WSGI_APPLICATION = 'becs_proyecto_titulo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database_becs',
-        'USER': 'user_becs',
-        'PASSWORD': 'becs123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
@@ -130,4 +138,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'becs_frutossecos.CustomUser'
+#AUTH_USER_MODEL = 'becs_frutossecos.Cliente'
