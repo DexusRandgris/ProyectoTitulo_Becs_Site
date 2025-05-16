@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<h1>Productos</h1>
+<h1 align="center">Productos</h1>
 
-<ul>
+<div class="productos-container">
     {% for producto in productos %}
-    <li>
-        {{ producto.nombre }} - ${{ prodcuto.precio }}
-    </li>
+    <div class="producto-tienda">
+      <img class="logo-producto" src="{% static 'img/noimage.png' %}" alt="Maní confitado">
+      <p>{{producto.nombre_producto}} <br>
+        {{producto.descripcion}} <br>
+        Precio: ${{producto.precio}} <br><br>
+        <button class="btn-agregar">Agregar producto</button>
+      </p>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}
