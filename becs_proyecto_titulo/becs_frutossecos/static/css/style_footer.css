@@ -1,14 +1,24 @@
-body {
+html, body {
+    height: 100%;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+body {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
-
+main {
+    flex: 1 0 auto;
+}
 .footer {
     background-color: #734A3C;
     color: white;
     padding: 20px 40px;
     font-family: 'Arial', sans-serif;
+    flex-shrink: 0;
+    width: 100%;
 }
 
 .cont-footer {

@@ -10,6 +10,7 @@ services:
     build: ./becs_proyecto_titulo
     volumes:
       - ./becs_proyecto_titulo:/opt/app/becs_proyecto_titulo    
+      - ./media:/opt/app/becs_proyecto_titulo/media
     environment:
      - DB_USER=user_becs
      - DB_PASSWORD=becs123
