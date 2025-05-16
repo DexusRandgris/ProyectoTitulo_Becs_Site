@@ -35,8 +35,7 @@ CREATE TABLE producto (
     descripcion VARCHAR(100) NOT NULL,
     precio INTEGER NOT NULL,
     stock INTEGER CHECK (stock >= 0) NOT NULL,
-    imagen BYTEA NOT NULL,
-    fecha_creacion DATE DEFAULT CURRENT_DATE NOT NULL,
+    imagen VARCHAR(255) NOT NULL,
     id_categoria INTEGER NOT NULL,
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria) ON DELETE CASCADE
 );
@@ -228,3 +227,24 @@ ALTER TABLE django_admin_log OWNER TO DB_USER;
 INSERT INTO public.auth_user VALUES (1, 'pbkdf2_sha256$1000000$xlXvjz0ddDJxRhURoywfyQ$3fpn+aT2y83o3ARN6A/Drq2VYuHf9siYnaAeEqfCZ40=', '2025-05-03 23:52:03.627244', true, 'admin', '', '', 'admin@admin.cl', true, true, '2025-05-03 23:51:39.405479');
 
 INSERT INTO public.django_session VALUES ('d1uvsdghd772q8qhbsxftggl6i7rjiin', '.eJxVjMsOgjAUBf-la9P0CcWle76h6X1gUdMmFFbGfxcSFro9M3PeIqZtzXFrvMSZxFVocfndIOGTywHokcq9SqxlXWaQhyJP2uRYiV-30_07yKnlvUZNDr1i431PWk8eePABg2VW1iF11iVPaULXhQF6Cko7AEu7bYDRiM8X7HY4XA:1uBMeJ:EnEMc_h-NIy2S976iwMh6CIEYbJd3DwkhLB7MEs0URg', '2025-05-17 23:52:03.629496');
+
+
+--Poblar tabla categoria
+INSERT INTO public.categoria VALUES(1, 'Aceites', 'Aceites');
+INSERT INTO public.categoria VALUES(2, 'Aceitunas', 'Aceitunas');
+INSERT INTO public.categoria VALUES(3, 'Aji', 'Aji');
+INSERT INTO public.categoria VALUES(4, 'Ajos', 'Ajos');
+INSERT INTO public.categoria VALUES(5, 'Aliño', 'Aliño');
+INSERT INTO public.categoria VALUES(6, 'Almendras', 'Almendras');
+
+
+--Poblar tabla producto
+INSERT INTO public.producto VALUES(1,'Aceite de coco','500ml',8300,100,'productos/aceitedecoco.png',1);
+INSERT INTO public.producto VALUES(2,'Aceitunas verdes','100grs',800,100,'productos/aceitunasverdes.png',2);
+INSERT INTO public.producto VALUES(3,'Aji de color','100grs',1000,100,'productos/ajidecolor.png',3);
+INSERT INTO public.producto VALUES(4,'Aji Pimienta cayena','100grs',1600,100,'productos/ajipimienta.png',3);
+INSERT INTO public.producto VALUES(5,'Ajos en escamas','100grs',1700,100,'productos/ajoenescamas.png',4);
+INSERT INTO public.producto VALUES(6,'Ajo en polvo','100grs',900,100,'productos/ajoenpolvo.png',4);
+INSERT INTO public.producto VALUES(7,'Aliño completo','100grs',900,100,'productos/aliñocompleto.png',5);
+INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'productos/almendraentera.png',6);
+

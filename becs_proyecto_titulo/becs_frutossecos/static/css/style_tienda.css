@@ -1,51 +1,83 @@
 .productos-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
-    gap: 15px;
-    justify-items: center;
-    margin-bottom: 50px;
-  }
-  
-  .producto-tienda {
-    display: flex;
-    flex-direction: column;
-    background-color: #DEB893;;
-    justify-content: space-between;
-    border-radius: 20px;
-    padding: 10px;
-    width: 180px; /* un poco más grande para dar espacio */
-    height: 300px; /* altura fija para alinear los botones */
-    text-align: center;
-  }
-  
-  .producto-tienda .logo-producto {
-    width: 100%;
-    height: 120px;
-    border-radius: 15px;
-    object-fit: cover;
-    border-color: transparent;
-  }
-  
-  .producto-tienda p {
-    font-size: 20px;
-    color: #333;
-    margin: 8px 0;
-    flex-grow: 1; /* permite que el párrafo crezca */
-  }
-  
-  .btn-agregar {
-    background-color: #6c4b3e;
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    margin-top: auto; /* lo empuja al fondo */
-  }
-  
-  .btn-agregar:hover {
-    background-color: #5a3d31;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 4 columnas */
+  gap: 10px;
+  justify-items: center; /* Centra las tarjetas en cada celda */
+}
+
+.producto-tienda {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 240px; /* o el ancho que prefieras */
+  min-height: 350px;
+  background: #DEB893;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-producto {
+  width: 100%;
+  max-width: 180px;   /* Ajusta este valor según el tamaño deseado */
+  height: 140px;      /* Altura fija para uniformidad */
+  object-fit: contain; /* O usa 'cover' si quieres recortar la imagen */
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.producto-tienda p {
+  flex: 1 1 auto;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.btn-agregar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em; /* Espacio entre icono y texto */
+  white-space: nowrap; /* Evita que el texto se divida en dos líneas */
+  background: #6B4F3A;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  transition: background 0.2s;
+  font-size: 1rem;
+}
+
+.btn-agregar svg {
+  flex-shrink: 0;
+}
+
+.btn-agregar:hover {
+  background: #A17E62;
+}
+
+.nombre-container {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.descripcion-container {
+  font-size: 1rem;
+  color: #666;
+  font-weight: lighter;
+}
+
+.precio-container {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0.1rem;
+}

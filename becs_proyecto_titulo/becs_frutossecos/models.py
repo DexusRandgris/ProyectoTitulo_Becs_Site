@@ -106,8 +106,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=100)
     precio = models.IntegerField()
     stock = models.IntegerField()
-    imagen = models.BinaryField()
-    fecha_creacion = models.DateField()
+    imagen = models.ImageField(upload_to='productos')
     id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria')
 
     class Meta:
