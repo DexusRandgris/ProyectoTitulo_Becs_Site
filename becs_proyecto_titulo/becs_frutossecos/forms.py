@@ -106,3 +106,40 @@ class ClienteForm(UserCreationForm):
 #   class Meta:
 #        model = CustomUser
 #        fields = [ 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+from django import forms
+from .models import Cliente
+
+class ClienteForm(forms.ModelForm):
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
+
+    class Meta:
+        model = Cliente
+        fields = ['nombre', 'apellido', 'email']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'})
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Cliente.objects.filter(email=email).exists():
+            raise forms.ValidationError('Este correo electrónico ya está registrado.')
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', 'Las contraseñas no coinciden.')
+        return cleaned_data
+
+    def save(self, commit=True):
+        cliente = super().save(commit=False)
+        cliente.contraseña = self.cleaned_data['password1']
+        if commit:
+            cliente.save()
+        return cliente

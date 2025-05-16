@@ -26,9 +26,6 @@ class Cliente(models.Model):
     apellido = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     contraseña = models.CharField(max_length=100)
-    telefono = models.IntegerField()
-    direccion = models.CharField(max_length=100)
-    rol = models.ForeignKey('Rol', models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -149,7 +146,6 @@ class ValoracionCliente(models.Model):
     class Meta:
         managed = False
         db_table = 'valoracion_cliente'
-
 
 #class CustomUser(AbstractUser):
 #    username = None

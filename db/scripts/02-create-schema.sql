@@ -23,12 +23,9 @@ ALTER TABLE rol OWNER TO DB_USER;
 CREATE TABLE cliente (
     id_cliente SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(100) NOT NULL,
-    telefono INTEGER NOT NULL,
-    direccion VARCHAR(100) NOT NULL,
-    rol_id INTEGER NOT NULL,
-    FOREIGN KEY (rol_id) REFERENCES rol(id_rol)
+    contraseña VARCHAR(100) NOT NULL
 );
 ALTER TABLE cliente OWNER TO DB_USER;
 

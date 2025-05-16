@@ -14,7 +14,7 @@
               <h2 class="m-0" style="color:#6B4F3A;">Crea tu cuenta</h2>
             </div>
             <div class="card-body" style="background-color:#A17E62;">
-              <form action="#" method="POST" id="registerForm">
+              <form method="POST" id="registerForm">
                 {% csrf_token %}
 
                 {% if form.errors %}
@@ -29,65 +29,7 @@
                   </div>
                 {% endif %}
 
-                <div class="mb-3">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
-                    <input type="text"
-                           name="first_name"
-                           id="id_first_name"
-                           class="form-control"
-                           placeholder="Nombre"
-                           required>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
-                    <input type="text"
-                           name="last_name"
-                           id="id_last_name"
-                           class="form-control"
-                           placeholder="Apellido"
-                           required>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
-                    <input type="email"
-                           name="email"
-                           id="id_email"
-                           class="form-control"
-                           placeholder="Correo electrónico"
-                           required>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
-                    <input type="password"
-                           name="password1"
-                           id="id_password1"
-                           class="form-control"
-                           placeholder="Contraseña"
-                           required>
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
-                    <input type="password"
-                           name="password2"
-                           id="id_password2"
-                           class="form-control"
-                           placeholder="Confirma tu contraseña"
-                           required>
-                  </div>
-                </div>
+                {{ form.as_p }}
 
                 <div class="d-flex justify-content-between">
                   <button type="submit" class="btn px-4" style="background-color:#6B4F3A; color:#FFF;">

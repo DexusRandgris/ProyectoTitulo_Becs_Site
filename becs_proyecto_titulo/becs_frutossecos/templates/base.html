@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/style_header.css' %}">
     <link rel="stylesheet" href="{% static 'css/inicio_sesion_styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_tienda.css' %}">
     <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
     <title>Becs Frutos Secos</title>
 </head>
@@ -20,36 +21,57 @@
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="{% url 'inicio' %}"><button>Inicio</button></a></li>
-                <li><a href="{% url 'tienda' %}"><button>Tienda</button></a></li>
-                <li><a href="/"><button>Despacho</button></a></li>
-                <li><a href="/"><button>Quienes somos</button></a></li>
-                <li><a href="/"><button>Contacto</button></a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                      </svg>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="#">Bienvenid@ {{ user.first_name }} {{ user.last_name }}</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
-                      {% else %}
-                        <li><a class="dropdown-item" href="{% url 'iniciosesion' %}">Iniciar sesión</a></li>
-                        <li><a class="dropdown-item" href="{% url 'registrate' %}">Registrarse</a></li>
-                      {% endif %}
-                    </ul>
-                  </li>
-                  
-                <div class="barra-carrito">
-                    <div class="contenedor-carrito">
-                      <a href="/carrito" class="carrito-link">
-                        <i class="fas fa-shopping-cart"></i> 
-                      </a>
+                {% if user.is_authenticated and user.is_staff %}
+                    <li><a href="{% url 'inicio' %}"><button>Inicio</button></a></li>
+                    <li><a href="{% url 'tienda' %}"><button>Tienda</button></a></li>
+                    <li><a href="{% url 'admin' %}"><button>CRUD</button></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                          </svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Bienvenid@ {{ user.username }} (Admin)</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel Admin</a></li>
+                            <li><a class="dropdown-item" href="{% url 'salir' %}">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'inicio' %}"><button>Inicio</button></a></li>
+                    <li><a href="{% url 'tienda' %}"><button>Tienda</button></a></li>
+                    <li><a href="/"><button>Despacho</button></a></li>
+                    <li><a href="/"><button>Quienes somos</button></a></li>
+                    <li><a href="/"><button>Contacto</button></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                          </svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          {% if request.session.cliente_nombre %}
+                            <li><a class="dropdown-item" href="#">Bienvenid@ {{ request.session.cliente_nombre }} {{ request.session.cliente_apellido }}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'salir' %}">Cerrar sesión</a></li>
+                          {% elif user.is_authenticated and user.is_staff %}
+                            <li><a class="dropdown-item" href="#">Bienvenid@ {{ user.username }} (Admin)</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel Admin</a></li>
+                            <li><a class="dropdown-item" href="{% url 'admin' %}">Panel Admin WEB </a></li>
+                            <li><a class="dropdown-item" href="{% url 'salir' %}">Cerrar sesión</a></li>
+                          {% else %}
+                            <li><a class="dropdown-item" href="{% url 'iniciosesion' %}">Iniciar sesión</a></li>
+                            <li><a class="dropdown-item" href="{% url 'registrate' %}">Registrarse</a></li>
+                          {% endif %}
+                        </ul>
+                      </li>
+                    <div class="barra-carrito">
+                        <div class="contenedor-carrito">
+                          <a href="/carrito" class="carrito-link">
+                            <i class="fas fa-shopping-cart"></i> 
+                          </a>
+                        </div>
                     </div>
-                  </div>
-
+                {% endif %}
             </ul>
         </nav>
     </header>
