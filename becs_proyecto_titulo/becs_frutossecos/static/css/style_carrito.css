@@ -180,8 +180,8 @@
   font-weight: bold;
   transition: background 0.2s;
 }
-.btn-volver-tienda:hover, .btn-volver-tienda:focus, .btn-volver-tienda:active, .btn-volver-tienda:visited {
+.btn-volver-tienda:hover{
   background: #714D37;
   color: #fff !important;
-  text-decoration: none;
+  text-decoration: none; 
 }
