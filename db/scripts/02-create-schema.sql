@@ -225,6 +225,7 @@ ALTER TABLE django_admin_log OWNER TO DB_USER;
 
 
 INSERT INTO public.auth_user VALUES (1, 'pbkdf2_sha256$1000000$xlXvjz0ddDJxRhURoywfyQ$3fpn+aT2y83o3ARN6A/Drq2VYuHf9siYnaAeEqfCZ40=', '2025-05-03 23:52:03.627244', true, 'admin', '', '', 'admin@admin.cl', true, true, '2025-05-03 23:51:39.405479');
+INSERT INTO public.auth_user VALUES (2, 'pbkdf2_sha256$1000000$nUOVj2WuTpGokiDWob07Gm$E0qx6OkRjs61AqSSP+M0IaChjLnxHKpBZLUycHQ3vr0=', '2025-05-17 23:52:03.629496', true, 'BescsUser', '', '', 'becs@admin.cl', true, true, '2025-05-17 23:51:39.405479');
 
 INSERT INTO public.django_session VALUES ('d1uvsdghd772q8qhbsxftggl6i7rjiin', '.eJxVjMsOgjAUBf-la9P0CcWle76h6X1gUdMmFFbGfxcSFro9M3PeIqZtzXFrvMSZxFVocfndIOGTywHokcq9SqxlXWaQhyJP2uRYiV-30_07yKnlvUZNDr1i431PWk8eePABg2VW1iF11iVPaULXhQF6Cko7AEu7bYDRiM8X7HY4XA:1uBMeJ:EnEMc_h-NIy2S976iwMh6CIEYbJd3DwkhLB7MEs0URg', '2025-05-17 23:52:03.629496');
 
@@ -248,3 +249,6 @@ INSERT INTO public.producto VALUES(6,'Ajo en polvo','100grs',900,100,'productos/
 INSERT INTO public.producto VALUES(7,'Aliño completo','100grs',900,100,'productos/aliñocompleto.png',5);
 INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'productos/almendraentera.png',6);
 
+--Poblar tabla cliente
+INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004');
+INSERT INTO public.cliente VALUES(2, 'Cliente', 'Becs', 'becs.cliente@gmail.com', '1234567890');

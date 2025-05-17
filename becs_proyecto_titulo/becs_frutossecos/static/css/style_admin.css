@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 60vh;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
   }
   
   .grid-botones {
@@ -13,12 +13,6 @@
     gap: 70px;
     max-width: 500px;
     width: 100%;
-  }
-  
-  .grid-botones > .centrado {
-    grid-column: 1 / 3;
-    display: flex;
-    justify-content: center;
   }
   
   .boton {
@@ -41,4 +35,262 @@
   .grande {
     width: 60%;
   }
-  
+/* Estilo para el formulario de agregar producto con la paleta del admin */
+#form-agregar-producto {
+  background: #fff8f2;
+  border: 1.5px solid #e7ae78;
+  box-shadow: 0 4px 16px rgba(185,122,86,0.08);
+  padding: 32px 28px 24px 28px;
+  border-radius: 12px;
+  max-width: 420px;
+  margin: 32px auto 0 auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+#form-agregar-producto h3 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #6D452B;
+  font-size: 1.4em;
+}
+#form-agregar-producto label {
+  display: block;
+  margin-bottom: 6px;
+  color: #714D37;
+  font-weight: bold;
+}
+#form-agregar-producto input[type="text"],
+#form-agregar-producto input[type="number"],
+#form-agregar-producto input[type="file"],
+#form-agregar-producto textarea,
+#form-agregar-producto select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 16px;
+  border: 1.5px solid #e7ae78;
+  border-radius: 5px;
+  font-size: 15px;
+  background: #fff;
+  color: #714D37;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+#form-agregar-producto input[type="text"]:focus,
+#form-agregar-producto input[type="number"]:focus,
+#form-agregar-producto textarea:focus,
+#form-agregar-producto select:focus {
+  border: 1.5px solid #b97a56;
+  outline: none;
+  background: #fff8f2;
+}
+#form-agregar-producto input[type="file"] {
+  background: none;
+  border: none;
+  margin-bottom: 18px;
+}
+#form-agregar-producto .boton {
+  width: 48%;
+  margin-right: 2%;
+  margin-bottom: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: #e7ae78;
+  color: #6D452B;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#form-agregar-producto .boton:last-child {
+  margin-right: 0;
+  background: #fff;
+  color: #b97a56;
+  border: 1.5px solid #e7ae78;
+}
+#form-agregar-producto .boton:hover {
+  background: #6D452B;
+  color: #fff;
+}
+#form-agregar-producto .boton:last-child:hover {
+  background: #e7ae78;
+  color: #6D452B;
+}
+
+/* Inputs del formulario de agregar producto */
+#form-agregar-producto input[type="text"],
+#form-agregar-producto input[type="number"],
+#form-agregar-producto textarea,
+#form-agregar-producto select {
+  background: #fff8f2;
+  border: 1.5px solid #e7ae78;
+  color: #714D37;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 4px rgba(185,122,86,0.04);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+}
+#form-agregar-producto input[type="text"]:focus,
+#form-agregar-producto input[type="number"]:focus,
+#form-agregar-producto textarea:focus,
+#form-agregar-producto select:focus {
+  border: 1.5px solid #b97a56;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(185,122,86,0.10);
+  outline: none;
+}
+#form-agregar-producto input[type="file"] {
+  background: #fff8f2;
+  border: 1.5px solid #e7ae78;
+  border-radius: 8px;
+  padding: 8px 0 8px 8px;
+  color: #714D37;
+  margin-bottom: 18px;
+  font-size: 15px;
+}
+#form-agregar-producto input[type="file"]:focus {
+  border: 1.5px solid #b97a56;
+  background: #fff;
+  outline: none;
+}
+#form-agregar-producto textarea {
+  min-height: 48px;
+  resize: vertical;
+}
+#form-agregar-producto select {
+  cursor: pointer;
+}
+::placeholder {
+  color: #b97a56;
+  opacity: 1;
+}
+
+/* Modal editar producto */
+#modal-editar-producto {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.18);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+#modal-editar-producto .modal-content {
+  background: #fff8f2;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 95vw;
+  margin: auto;
+  padding: 32px 28px 22px 28px;
+  box-shadow: 0 4px 24px rgba(185,122,86,0.14);
+  position: relative;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+#modal-editar-producto h3 {
+  text-align: center;
+  color: #6D452B;
+  margin-bottom: 22px;
+  font-size: 1.4em;
+}
+#modal-editar-producto label {
+  display: block;
+  margin-bottom: 6px;
+  color: #714D37;
+  font-weight: bold;
+}
+#modal-editar-producto input[type="text"],
+#modal-editar-producto input[type="number"],
+#modal-editar-producto textarea,
+#modal-editar-producto select {
+  background: #fff8f2;
+  border: 1.5px solid #e7ae78;
+  color: #714D37;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 4px rgba(185,122,86,0.04);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+}
+#modal-editar-producto input[type="text"]:focus,
+#modal-editar-producto input[type="number"]:focus,
+#modal-editar-producto textarea:focus,
+#modal-editar-producto select:focus {
+  border: 1.5px solid #b97a56;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(185,122,86,0.10);
+  outline: none;
+}
+#modal-editar-producto input[type="file"] {
+  background: #fff8f2;
+  border: 1.5px solid #e7ae78;
+  border-radius: 8px;
+  padding: 8px 0 8px 8px;
+  color: #714D37;
+  margin-bottom: 18px;
+  font-size: 15px;
+}
+#modal-editar-producto input[type="file"]:focus {
+  border: 1.5px solid #b97a56;
+  background: #fff;
+  outline: none;
+}
+#modal-editar-producto textarea {
+  min-height: 48px;
+  resize: vertical;
+}
+#modal-editar-producto select {
+  cursor: pointer;
+}
+#modal-editar-producto .boton {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: #e7ae78;
+  color: #6D452B;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#modal-editar-producto .boton:hover {
+  background: #6D452B;
+  color: #fff;
+}
+#modal-editar-producto .close-modal {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #b97a56;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+#modal-editar-producto .close-modal:hover {
+  color: #e57373;
+}
+#edit-imagen-actual {
+  display: block;
+  margin-bottom: 10px;
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 8px;
+  border: 1.5px solid #e7ae78;
+  background: #fff;
+}
+@media (max-width: 600px) {
+  #modal-editar-producto .modal-content {
+    padding: 18px 6vw 14px 6vw;
+    max-width: 98vw;
+  }
+  #modal-editar-producto h3 {
+    font-size: 1.1em;
+  }
+}

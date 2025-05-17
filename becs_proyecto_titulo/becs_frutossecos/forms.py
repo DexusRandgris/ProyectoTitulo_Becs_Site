@@ -108,7 +108,7 @@ class ClienteForm(UserCreationForm):
 #        fields = [ 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 from django import forms
-from .models import Cliente
+from .models import Cliente, Producto
 
 class ClienteForm(forms.ModelForm):
     password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -143,3 +143,16 @@ class ClienteForm(forms.ModelForm):
         if commit:
             cliente.save()
         return cliente
+
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['nombre_producto', 'descripcion', 'precio', 'stock', 'imagen', 'id_categoria']
+        widgets = {
+            'nombre_producto': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'descripcion': forms.TextInput(attrs={'autocomplete': 'off'}),
+            'precio': forms.NumberInput(attrs={'autocomplete': 'off'}),
+            'stock': forms.NumberInput(attrs={'autocomplete': 'off'}),
+            'imagen': forms.ClearableFileInput(attrs={'autocomplete': 'off'}),
+            'id_categoria': forms.Select(attrs={'autocomplete': 'off'}),
+        }
