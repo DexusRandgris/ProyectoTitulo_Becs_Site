@@ -1,19 +1,207 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% block content %}
 
 <h2 align="center">Vista administrador</h2>
 <div class="panel-botones">
     <div class="grid-botones">
-      <button class="boton">Agregar producto</button>
-      <button class="boton">Modificar producto</button>
-      <button class="boton">Eliminar producto</button>
-      <button class="boton">Lista de producto</button>
-      <div class="centrado">
-        <button class="boton grande">Registrar usuario</button>
-      </div>
+      <button class="boton" id="btn-agregar">Agregar producto</button>
+      <button class="boton" id="btn-modificar">Modificar producto</button>
+      <button class="boton" id="btn-eliminar">Eliminar producto</button>
+      <button class="boton" id="btn-lista">Lista de producto</button>
     </div>
   </div>
 
+<!-- Formulario oculto para agregar producto -->
+<div id="form-agregar-producto" style="display:none; margin: 20px auto; max-width: 400px; border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9;">
+  <h3>Agregar nuevo producto</h3>
+  <form method="post" action="/agregar_producto/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="nombre_producto">Nombre:</label><br>
+    <input type="text" id="nombre_producto" name="nombre_producto" required><br><br>
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" name="descripcion" rows="3" required></textarea><br><br>
+    <label for="precio">Precio:</label><br>
+    <input type="number" id="precio" name="precio" step="0.01" required><br><br>
+    <label for="stock">Stock:</label><br>
+    <input type="number" id="stock" name="stock" required><br><br>
+    <label for="imagen">Imagen:</label><br>
+    <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+    <label for="id_categoria">Categoría:</label><br>
+    <select id="id_categoria" name="id_categoria" required>
+      <option value="">Seleccione una categoría</option>
+      {% for categoria in categorias %}
+        <option value="{{ categoria.id_categoria|stringformat:'s' }}">{{ categoria.nombre }}</option>
+      {% endfor %}
+    </select><br><br>
+    <button type="submit" class="boton">Guardar</button>
+    <button type="button" class="boton" onclick="document.getElementById('form-agregar-producto').style.display='none'">Cancelar</button>
+  </form>
+</div>
+
+<!-- Lista de productos para eliminar (oculta por defecto) -->
+<div id="lista-eliminar-productos" style="display:none; max-width: 600px; margin: 30px auto 0 auto;">
+  <h3 style="text-align:center; color:#6D452B;">Eliminar productos</h3>
+  <ul style="list-style:none; padding:0;">
+    {% for producto in productos %}
+      <li style="display:flex; align-items:center; justify-content:space-between; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:12px; padding:10px 18px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}" style="width:60px; height:60px; object-fit:cover; border-radius:8px; border:1.5px solid #e7ae78; background:#fff;">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <span style="color:#714D37; font-weight:600; font-size:1.08em;">{{ producto.nombre_producto }}</span>
+            <span style="color:#b97a56; font-size:0.98em;">Precio: ${{ producto.precio|intcomma }} CLP</span>
+            <span style="color:#6D452B; font-weight:600; font-size:0.97em;">Categoría: <span style="font-weight:500;">{{ producto.id_categoria.nombre }}</span></span>
+          </div>
+        </div>
+        <form method="post" action="/eliminar-producto/{{ producto.id_producto }}/" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="boton" style="background:#e57373; color:#fff; font-size:14px; padding:6px 18px; border-radius:5px;">Eliminar</button>
+        </form>
+      </li>
+    {% empty %}
+      <li style="text-align:center; color:#b97a56;">No hay productos para eliminar.</li>
+    {% endfor %}
+  </ul>
+  <div style="text-align:center;">
+    <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-eliminar-productos').style.display='none'">Cerrar</button>
+  </div>
+</div>
+
+<!-- Lista de todos los productos (oculta por defecto) -->
+<div id="lista-todos-productos" style="display:none; max-width: 800px; margin: 30px auto 0 auto;">
+  <h3 style="text-align:center; color:#6D452B;">Lista de productos</h3>
+  <ul style="list-style:none; padding:0;">
+    {% for producto in productos %}
+      <li style="display:flex; align-items:center; gap:18px; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:14px; padding:12px 20px;">
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}" style="width:70px; height:70px; object-fit:cover; border-radius:8px; border:1.5px solid #e7ae78; background:#fff;">
+        <div style="flex:1;">
+          <div style="color:#714D37; font-weight:600; font-size:1.1em;">{{ producto.nombre_producto }}</div>
+          <div style="color:#b97a56; font-size:0.98em; margin-bottom:4px;">{{ producto.descripcion }}</div>
+          <div style="color:#6D452B; font-size:0.97em;">Categoría: <span style="font-weight:500;">{{ producto.id_categoria.nombre }}</span></div>
+        </div>
+        <div style="color:#714D37; font-weight:bold; font-size:1.1em; min-width:90px; text-align:right;">${{ producto.precio|intcomma }}</div>
+      </li>
+    {% empty %}
+      <li style="text-align:center; color:#b97a56;">No hay productos registrados.</li>
+    {% endfor %}
+  </ul>
+  <div style="text-align:center;">
+    <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-todos-productos').style.display='none'">Cerrar</button>
+  </div>
+</div>
+
+<!-- Lista de productos para modificar (oculta por defecto) -->
+<div id="lista-modificar-productos" style="display:none; max-width: 800px; margin: 30px auto 0 auto;">
+  <h3 style="text-align:center; color:#6D452B;">Modificar productos</h3>
+  <ul style="list-style:none; padding:0;">
+    {% for producto in productos %}
+      <li style="display:flex; align-items:center; gap:18px; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:14px; padding:12px 20px;">
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}" style="width:60px; height:60px; object-fit:cover; border-radius:8px; border:1.5px solid #e7ae78; background:#fff;">
+        <div style="flex:1;">
+          <div style="color:#714D37; font-weight:600; font-size:1.1em;">{{ producto.nombre_producto }}</div>
+          <div style="color:#b97a56; font-size:0.98em; margin-bottom:4px;">{{ producto.descripcion }}</div>
+          <div style="color:#6D452B; font-size:0.97em;">Categoría: <span style="font-weight:500;">{{ producto.id_categoria.nombre }}</span></div>
+        </div>
+        <button class="boton editar-producto" data-id="{{ producto.id_producto }}" data-nombre="{{ producto.nombre_producto }}" data-descripcion="{{ producto.descripcion }}" data-precio="{{ producto.precio }}" data-stock="{{ producto.stock }}" data-categoria="{{ producto.id_categoria.id_categoria|stringformat:'s' }}" data-imagen="{{ producto.imagen.url }}" style="background:#e7ae78; color:#6D452B; font-size:18px; padding:8px 14px; border-radius:6px; display:flex; align-items:center; justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#6D452B" d="M4 21h17v2H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h2v2H4v17zm16.7-13.3a1 1 0 0 0 0-1.4l-2-2a1 1 0 0 0-1.4 0l-1.1 1.1 3.4 3.4 1.1-1.1zM6 17.3V20h2.7l9.9-9.9-2.7-2.7L6 17.3z"/></svg>
+        </button>
+      </li>
+    {% empty %}
+      <li style="text-align:center; color:#b97a56;">No hay productos para modificar.</li>
+    {% endfor %}
+  </ul>
+  <div style="text-align:center;">
+    <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-modificar-productos').style.display='none'">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal para editar producto -->
+<div id="modal-editar-producto" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:1000; justify-content:center; align-items:center;">
+  <div class="modal-content">
+    <button class="close-modal" onclick="document.getElementById('modal-editar-producto').style.display='none'">&times;</button>
+    <h3 style="text-align:center; color:#6D452B; margin-bottom:18px;">Editar producto</h3>
+    <form id="form-editar-producto" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" id="edit-id" name="id_producto">
+      <label for="edit-nombre">Nombre:</label>
+      <input type="text" id="edit-nombre" name="nombre_producto" required>
+      <label for="edit-descripcion">Descripción:</label>
+      <textarea id="edit-descripcion" name="descripcion" rows="3" required></textarea>
+      <label for="edit-precio">Precio:</label>
+      <input type="number" id="edit-precio" name="precio" step="0.01" required>
+      <label for="edit-stock">Stock:</label>
+      <input type="number" id="edit-stock" name="stock" required>
+      <label for="edit-categoria">Categoría:</label>
+      <select id="edit-categoria" name="id_categoria" required>
+        {% for categoria in categorias %}
+          <option value="{{ categoria.id_categoria|stringformat:'s' }}">{{ categoria.nombre }}</option>
+        {% endfor %}
+      </select>
+      <label for="edit-imagen">Imagen (opcional):</label>
+      <img id="edit-imagen-actual" src="" alt="Imagen actual" style="display:block; margin-bottom:10px; max-width:120px; max-height:120px; border-radius:8px; border:1.5px solid #e7ae78; background:#fff;">
+      <input type="file" id="edit-imagen" name="imagen" accept="image/*">
+      <button type="submit" class="boton" style="width:100%; margin-top:10px;">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('btn-agregar').onclick = function() {
+    document.getElementById('form-agregar-producto').style.display = 'block';
+    document.getElementById('lista-eliminar-productos').style.display = 'none';
+    document.getElementById('lista-todos-productos').style.display = 'none';
+    document.getElementById('lista-modificar-productos').style.display = 'none';
+  };
+  document.getElementById('btn-eliminar').onclick = function() {
+    document.getElementById('lista-eliminar-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-todos-productos').style.display = 'none';
+    document.getElementById('lista-modificar-productos').style.display = 'none';
+  };
+  document.getElementById('btn-lista').onclick = function() {
+    document.getElementById('lista-todos-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-eliminar-productos').style.display = 'none';
+    document.getElementById('lista-modificar-productos').style.display = 'none';
+  };
+  document.getElementById('btn-modificar').onclick = function() {
+    document.getElementById('lista-modificar-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-eliminar-productos').style.display = 'none';
+    document.getElementById('lista-todos-productos').style.display = 'none';
+  };
+
+  // Abrir modal y rellenar datos al hacer clic en lápiz
+  document.querySelectorAll('.editar-producto').forEach(function(btn) {
+    btn.onclick = function() {
+      document.getElementById('modal-editar-producto').style.display = 'flex';
+      document.getElementById('edit-id').value = btn.getAttribute('data-id');
+      document.getElementById('edit-nombre').value = btn.getAttribute('data-nombre');
+      document.getElementById('edit-descripcion').value = btn.getAttribute('data-descripcion');
+      document.getElementById('edit-precio').value = btn.getAttribute('data-precio');
+      document.getElementById('edit-stock').value = btn.getAttribute('data-stock');
+      const select = document.getElementById('edit-categoria');
+      const catValue = btn.getAttribute('data-categoria');
+      for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value == catValue) {
+              select.selectedIndex = i;
+              break;
+          }
+      }
+      document.getElementById('edit-imagen-actual').src = btn.getAttribute('data-imagen');
+      document.getElementById('edit-imagen-actual').style.display = btn.getAttribute('data-imagen') ? 'block' : 'none';
+      // El formulario enviará a la URL de modificar_producto
+      document.getElementById('form-editar-producto').action = '/modificar-producto/' + btn.getAttribute('data-id') + '/';
+    };
+  });
+</script>
+
+{% if messages %}
+  <div class="mensajes">
+    {% for message in messages %}
+      <div class="mensaje {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 {% endblock %}

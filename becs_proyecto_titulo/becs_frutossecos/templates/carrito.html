@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block content %}
 <h1 align="center">Carrito de compras</h1>
 
@@ -17,8 +18,8 @@
             {{ item.producto.descripcion }}
           </div>
           <div class="carrito-precio">
-            <span>Precio unitario:</span> ${{ item.producto.precio }}<br>
-            <span>Subtotal:</span> ${{ item.subtotal }}
+            <span>Precio unitario:</span> ${{ item.producto.precio|intcomma }}<br>
+            <span>Subtotal:</span> ${{ item.subtotal|intcomma }}
           </div>
         </div>
         <div class="carrito-acciones">
@@ -46,10 +47,26 @@
     {% endfor %}
     <div class="carrito-total-container">
       <span class="carrito-total-label">Total:</span>
-      <span class="carrito-total-monto">${{ total }}</span>
+      <span class="carrito-total-monto">${{ total|intcomma }}</span>
+      <form method="POST" action="{% url 'vaciar_carrito' %}" style="display:inline; margin-left:18px;">
+        {% csrf_token %}
+        <button type="submit" class="btn-eliminar-carrito" title="Vaciar carrito" style="padding:7px 12px; vertical-align:middle;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+          </svg>
+        </button>
+      </form>
     </div>
   {% else %}
-    <p style="text-align:center;">No hay productos en el carrito.</p>
+    <div class="carrito-vacio">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">
+        <circle cx="9" cy="20" r="2" fill="#b97a56"/>
+        <circle cx="17" cy="20" r="2" fill="#b97a56"/>
+        <path fill="#e7ae78" d="M7 18h10a2 2 0 0 0 2-1.6l1.5-7A1 1 0 0 0 19.5 8H6.21l-.94-4.34A1 1 0 0 0 4.3 3H2a1 1 0 1 0 0 2h1.3l3.6 16.34A2 2 0 0 0 8.8 22h6.4a2 2 0 0 0 1.97-1.66l.3-1.34H7.16l-.16-.66z"/>
+      </svg>
+      <p>No hay productos en el carrito.</p>
+      <a href="/tienda/" class="btn-volver-tienda">Volver a la tienda</a>
+    </div>
   {% endif %}
 </div>
 {% endblock %}

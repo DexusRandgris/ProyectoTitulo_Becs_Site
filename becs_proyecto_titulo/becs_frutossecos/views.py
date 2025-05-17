@@ -4,19 +4,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 #from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 #from django.shortcuts import redirect
-#from django.contrib import messages
+from django.contrib import messages
 #from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 #from .compra import Carrito
 #from .forms import CustomAuthenticationForm,RegistroUserForm
-from .models import Producto, Cliente
+from .models import Producto, Cliente, Categoria
 from django.shortcuts import render, redirect
-from .forms import ClienteForm
+from .forms import ClienteForm, ProductoForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import redirect, get_object_or_404
 from .models import Producto
+from django.http import JsonResponse
+from django.http import HttpResponse
 
 def inicio (request):
      return render(request, 'index.html')
@@ -123,7 +125,17 @@ def salir(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def administrador(request):
-    return render(request,'admin.html')
+    form = ProductoForm()
+    mensaje = ""
+    if request.method == "POST":
+        form = ProductoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            mensaje = "Producto agregado correctamente."
+            form = ProductoForm()  # Limpiar el formulario
+    productos = Producto.objects.all()
+    categorias = Categoria.objects.all()
+    return render(request, 'admin.html', {'form': form, 'mensaje': mensaje, 'productos': productos, 'categorias': categorias})
 
 def eliminar_del_carrito(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -132,3 +144,58 @@ def eliminar_del_carrito(request, producto_id):
         del carrito[producto_id]
         request.session['carrito'] = carrito
     return redirect('carrito')
+
+def vaciar_carrito(request):
+    if 'carrito' in request.session:
+        del request.session['carrito']
+    return redirect('carrito')
+
+def eliminar_producto(request, producto_id):
+    if request.method == "POST":
+        producto = get_object_or_404(Producto, id_producto=producto_id)
+        producto.delete()
+    return redirect('admin')
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def modificar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id_producto=producto_id)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, request.FILES, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('admin')
+    else:
+        form = ProductoForm(instance=producto)
+    return render(request, 'formulario_modificar_producto.html', {'form': form, 'producto': producto})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def agregar_producto(request):
+    categorias = Categoria.objects.all()
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre_producto')
+        descripcion = request.POST.get('descripcion')
+        precio = request.POST.get('precio')
+        stock = request.POST.get('stock')
+        imagen = request.FILES.get('imagen')
+        id_categoria = request.POST.get('id_categoria')
+
+        if not (nombre and descripcion and precio and stock and imagen and id_categoria):
+            messages.error(request, 'Todos los campos son obligatorios.')
+            return render(request, 'admin.html', {'categorias': categorias})
+
+        producto = Producto(
+            nombre_producto=nombre,
+            descripcion=descripcion,
+            precio=precio,
+            stock=stock,
+            imagen=imagen,
+            id_categoria=Categoria.objects.get(id_categoria=id_categoria)
+        )
+        producto.save()
+        messages.success(request, 'Producto agregado correctamente.')
+        return redirect('admin')
+    else:
+        return render(request, 'admin.html', {'categorias': categorias})
+

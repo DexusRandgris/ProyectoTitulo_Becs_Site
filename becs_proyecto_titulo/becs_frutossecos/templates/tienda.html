@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 <h1 align="center">Productos</h1>
 
@@ -14,8 +15,8 @@
         <div class="descripcion-container">
           {{producto.descripcion}} <br>
         </div>
-        <div class="precio-container">
-          ${{producto.precio}} <br><br>
+        <div class="precio-container"> 
+          ${{producto.precio|intcomma}} <br><br>
         </div>
         <form method="POST" action="{% url 'agregar_al_carrito' producto.id_producto %}">
           {% csrf_token %}
