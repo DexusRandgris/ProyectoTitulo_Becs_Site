@@ -21,10 +21,16 @@ def header_request_transbank():
 # DEFINICIÓN DE RUTA API REST, PERMITIENDO SOLO SER LLAMADO POR POST
 def transbank_create(request):
     print('transbank_create')
+    if request.method == 'POST':
+        amount =  request.POST.get('amount')
+        if not amount:
+            return render(request, 'carrito.html', {'error': 'No se recibió el monto'})
+    else:
+        amount = 0
     data = {
         "buy_order" : 500,
         "session_id" : 150,
-        "amount" : 500000,
+        "amount" : int(amount),
         "return_url" : "http://localhost:8000/commit_pay"
     }
     print('data: ', data)

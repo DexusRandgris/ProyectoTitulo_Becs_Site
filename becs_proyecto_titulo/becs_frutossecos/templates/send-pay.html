@@ -10,7 +10,7 @@
     {% if contexto %}
     <form action="{{ contexto.url }}" name="send_pay_form" method="POST">
         <input type="hidden" name="token_ws" value="{{ contexto.token }}">
-        <input type="hidden" name="amount" value="500000">
+        <input type="hidden" name="amount" value="{{ contexto.amount }}">
     </form>
     {% endif %}
 </body>

@@ -2,7 +2,6 @@
 {% load humanize %}
 {% block content %}
 <h1 align="center">Carrito de compras</h1>
-
 <div class="productos-container">
   {% if productos_info %}
     {% for item in productos_info %}
@@ -57,9 +56,11 @@
         </button>
       </form>
     </div>
-    <div>
-      <a href="/transbank"><button>PAGAR</button></a>
-    </div>
+   <form method="POST" action="{% url 'transbank' %}">
+    {% csrf_token %}
+    <input type="hidden" name="amount" value="{{ total }}">
+    <button type="submit" class="btn-pagar">PAGAR</button>
+   </form>
   {% else %}
     <div class="carrito-vacio">
       <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">

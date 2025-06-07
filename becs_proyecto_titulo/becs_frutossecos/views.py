@@ -202,67 +202,56 @@ def agregar_producto(request):
         return render(request, 'admin.html', {'categorias': categorias})
 
 def commit_pay(request):
-    if request.method == 'POST':
-        token_ws = request.POST.get('token_ws')
-        if token_ws is not None:
-            response = transbank.transbank_commit(token_ws)
+    transaction_detail = {}
+    # Buscar el token en POST o en GET
+    token_ws = request.POST.get('token_ws') or request.GET.get('token_ws')
+    if token_ws:
+        response = transbank.transbank_commit(token_ws)
+        if response.status_code == 200:
+            response = response.json()
+            status = response['status']
+            response_code = response['response_code']
 
-            if response.status_code == 200:
-                response = response.json()
-                print(f'json: {response}')
-                status = response['status']
-                print("status: {0}".format(status))
-                response_code = response['response_code']
-                print("response_code: {0}".forma(response_code))
-
-                if status == 'AUTHORIZED' and response_code == 0:
-                    state = ''
-                    if status == 'AUTHORIZED':
-                        state = 'ACEPTADO'
-                    pay_type = ''
-                    if response['payment_type_code'] == 'VD':
-                        pay_type = 'Tarjeta de Débito'
-                    if response['payment_type_code'] == 'VC':
-                        pay_type = 'Tarjeta de Crédito'
-                    amount = int(response['amount'])
-                    amount = f'{amount:,.0f}'.replace(',','.')
-                    transaction_date = dt.datetime.strptime(response['transaction_date'], '%Y-%m-%dT%H:M%:%S.%fZ')
-                    transaction_date = '{:%d-%m-%Y %H:%M:%S}'.format(transaction_date)
-                    transaction_detail = {  'card_number': response['card_detail']['card_number'],
-                                                'transaction_date': transaction_date,
-                                                'state': state,
-                                                'pay_type': pay_type,
-                                                'amount': amount,
-                                                'authorization_code': response['authorization_code'],
-                                                'buy_order': response['buy_order'], }
-                else:
-                    #TRANSACCIÓN RECHAZADA
-                    state = ''
-                    if status == 'FAILED':
-                        state = 'RECHAZADO'            
-                    if response['payment_type_code'] == 'VD':
-                        pay_type = 'Tarjeta de Débito'
-                    if response['payment_type_code'] == 'VC':
-                        pay_type = 'Tarjeta de Crédito'            
-                    amount = int(response['amount'])
-                    amount = f'{amount:,.0f}'.replace(',', '.')
-                    #response = transbank_reverse_or_cancel(tokenws=tokenws, amount=amount)
-                    print(f'response: {response}')
-                    transaction_date = dt.datetime.strptime(response['transaction_date'], '%Y-%m-%dT%H:%M:%S.%fZ')
-                    transaction_date = '{:%d-%m-%Y %H:%M:%S}'.format(transaction_date)
-                    transaction_detail = {  'card_number': response['card_detail']['card_number'],
-                                            'transaction_date': transaction_date,
-                                            'state': state,
-                                            'pay_type': pay_type,
-                                            'amount': amount,
-                                            'authorization_code': response['authorization_code'],
-                                            'buy_order': response['buy_order'], }
-            else:        
-                return render(request, 'commit_pay.html', {'transaction_detail': None})
+            if status == 'AUTHORIZED' and response_code == 0:
+                # Transacción exitosa
+                state = 'ACEPTADO'
+                pay_type = 'Tarjeta de Débito' if response['payment_type_code'] == 'VD' else 'Tarjeta de Crédito'
+                amount = int(response['amount'])
+                amount = f'{amount:,.0f}'.replace(',','.')
+                transaction_date = dt.datetime.strptime(response['transaction_date'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                transaction_date = '{:%d-%m-%Y %H:%M:%S}'.format(transaction_date)
+                transaction_detail = {
+                    'card_number': response['card_detail']['card_number'],
+                    'transaction_date': transaction_date,
+                    'state': state,
+                    'pay_type': pay_type,
+                    'amount': amount,
+                    'authorization_code': response['authorization_code'],
+                    'buy_order': response['buy_order'],
+                }
+            else:
+                # Transacción rechazada o fallida
+                state = 'RECHAZADO' if status == 'FAILED' else status
+                pay_type = 'Tarjeta de Débito' if response['payment_type_code'] == 'VD' else 'Tarjeta de Crédito'
+                amount = int(response['amount'])
+                amount = f'{amount:,.0f}'.replace(',', '.')
+                transaction_date = dt.datetime.strptime(response['transaction_date'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                transaction_date = '{:%d-%m-%Y %H:%M:%S}'.format(transaction_date)
+                transaction_detail = {
+                    'card_number': response['card_detail']['card_number'],
+                    'transaction_date': transaction_date,
+                    'state': state,
+                    'pay_type': pay_type,
+                    'amount': amount,
+                    'authorization_code': response['authorization_code'],
+                    'buy_order': response['buy_order'],
+                }
         else:
-            return render(request, 'commit_pay.html', {'transaction_detail': None})
-        return render(request, 'commit_pay.html', {'transaction_detail': transaction_detail})
+            # Error en la respuesta de Transbank
+            transaction_detail = {'error': 'Error al procesar el pago.'}
     else:
-        return render(request, 'commit_pay.html', {'transaction_detail': None})
+        # No se recibió el token de pago
+        transaction_detail = {'error': 'No se recibió el token de pago.'}
+    return render(request, 'commit_pay.html', {'transaction_detail': transaction_detail})
 
           
