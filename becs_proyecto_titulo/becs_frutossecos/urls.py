@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from . import transbank
 
 urlpatterns = [
 
@@ -22,4 +23,6 @@ urlpatterns = [
     path('eliminar-producto/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
     path('modificar-producto/<int:producto_id>/', views.modificar_producto, name='modificar_producto'),
     path('agregar_producto/', views.agregar_producto, name='agregar_producto'),
+    path('transbank', transbank.transbank_create, name='transbank'),
+    path('commit_pay', views.commit_pay, name='commit_pay')
 ]
