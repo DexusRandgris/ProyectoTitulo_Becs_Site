@@ -8,7 +8,8 @@
       <button class="boton" id="btn-agregar">Agregar producto</button>
       <button class="boton" id="btn-modificar">Modificar producto</button>
       <button class="boton" id="btn-eliminar">Eliminar producto</button>
-      <button class="boton" id="btn-lista">Lista de producto</button>
+      <button class="boton" id="btn-lista">Listado de productos</button>
+      <a href="{% url 'lista_pedidos' %}" class="boton" style="text-decoration: none; display: inline-block; text-align: center;">Listado de pedidos</a>
     </div>
   </div>
 
@@ -116,31 +117,43 @@
 </div>
 
 <!-- Modal para editar producto -->
-<div id="modal-editar-producto" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:1000; justify-content:center; align-items:center;">
+<div id="modal-editar-producto">
   <div class="modal-content">
     <button class="close-modal" onclick="document.getElementById('modal-editar-producto').style.display='none'">&times;</button>
-    <h3 style="text-align:center; color:#6D452B; margin-bottom:18px;">Editar producto</h3>
+    <h3>Editar producto</h3>
     <form id="form-editar-producto" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="hidden" id="edit-id" name="id_producto">
-      <label for="edit-nombre">Nombre:</label>
-      <input type="text" id="edit-nombre" name="nombre_producto" required>
+      <div class="form-group-inline">
+        <div>
+          <label for="edit-nombre">Nombre:</label>
+          <input type="text" id="edit-nombre" name="nombre_producto" required>
+        </div>
+        <div>
+          <label for="edit-precio">Precio:</label>
+          <input type="number" id="edit-precio" name="precio" step="0.01" required>
+        </div>
+      </div>
       <label for="edit-descripcion">Descripción:</label>
       <textarea id="edit-descripcion" name="descripcion" rows="3" required></textarea>
-      <label for="edit-precio">Precio:</label>
-      <input type="number" id="edit-precio" name="precio" step="0.01" required>
-      <label for="edit-stock">Stock:</label>
-      <input type="number" id="edit-stock" name="stock" required>
-      <label for="edit-categoria">Categoría:</label>
-      <select id="edit-categoria" name="id_categoria" required>
-        {% for categoria in categorias %}
-          <option value="{{ categoria.id_categoria|stringformat:'s' }}">{{ categoria.nombre }}</option>
-        {% endfor %}
-      </select>
+      <div class="form-group-inline">
+        <div>
+          <label for="edit-stock">Stock:</label>
+          <input type="number" id="edit-stock" name="stock" required>
+        </div>
+        <div>
+          <label for="edit-categoria">Categoría:</label>
+          <select id="edit-categoria" name="id_categoria" required>
+            {% for categoria in categorias %}
+              <option value="{{ categoria.id_categoria|stringformat:'s' }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
       <label for="edit-imagen">Imagen (opcional):</label>
-      <img id="edit-imagen-actual" src="" alt="Imagen actual" style="display:block; margin-bottom:10px; max-width:120px; max-height:120px; border-radius:8px; border:1.5px solid #e7ae78; background:#fff;">
+      <img id="edit-imagen-actual" src="" alt="Imagen actual">
       <input type="file" id="edit-imagen" name="imagen" accept="image/*">
-      <button type="submit" class="boton" style="width:100%; margin-top:10px;">Guardar cambios</button>
+      <button type="submit" class="boton">Guardar cambios</button>
     </form>
   </div>
 </div>

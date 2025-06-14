@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    .pedidos-container {
+        max-width: 1300px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff8f2;
+        border: 2px solid #e7ae78;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(107, 79, 58, 0.15);
+    }
+
+    .pedidos-title {
+        text-align: center;
+        color: #6B4F3A;
+        font-size: 2.2em;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .pedidos-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .pedidos-table th,
+    .pedidos-table td {
+        padding: 15px 20px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .pedidos-table th {
+        background: #DDB892;
+        color: #6B4F3A;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 1em;
+    }
+
+    .pedidos-table tr:nth-child(even) {
+        background-color: #fcf6f0;
+    }
+
+    .pedidos-table tr:hover {
+        background-color: #f5edeb;
+    }
+
+    .pedidos-table td {
+        color: #714D37;
+        font-size: 0.95em;
+    }
+
+    .pedidos-table td ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pedidos-table td ul li {
+        margin-bottom: 5px;
+        color: #b97a56;
+    }
+    .no-pedidos-message {
+        text-align: center;
+        padding: 30px;
+        background: #fdf6e7;
+        border: 1px solid #e7ae78;
+        border-radius: 10px;
+        color: #b97a56;
+        font-size: 1.2em;
+        margin-top: 20px;
+    }
+
+    .btn-back-admin {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 25px;
+        background: #A17E62;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1em;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .btn-back-admin:hover {
+        background: #8b6b52;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(161, 126, 98, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .pedidos-container {
+            margin: 20px;
+            padding: 20px;
+        }
+        .pedidos-table th,
+        .pedidos-table td {
+            padding: 10px;
+            font-size: 0.85em;
+        }
+        .pedidos-table td:nth-child(3), /* Cliente */
+        .pedidos-table td:nth-child(5) { /* Método de pago */
+            display: none; /* Ocultar en móviles para tablas más compactas */
+        }
+        .pedidos-table th:nth-child(3), /* Cliente */
+        .pedidos-table th:nth-child(5) { /* Método de pago */
+            display: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .pedidos-table td:nth-child(2), /* Fecha */
+        .pedidos-table th:nth-child(2) {
+            display: none;
+        }
+        .pedidos-title {
+            font-size: 1.8em;
+        }
+    }
+
+</style>
+
+<div class="pedidos-container">
+    <h1 class="pedidos-title">Listado de Pedidos Realizados</h1>
+
+    {% if pedidos %}
+        <table class="pedidos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Orden Transbank</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Método de Pago</th>
+                    <th>Detalle del Pedido</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.id_pedido }}</td>
+                    <td>{{ pedido.transbank_buy_order }}</td>
+                    <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+                    <td>{{ pedido.cliente_id_cliente.nombre }} {{ pedido.cliente_id_cliente.apellido }}</td>
+                    <td>{{ pedido.id_estado_pedido.estado }}</td>
+                    <td>{{ pedido.metodo_pago_id_metodo_pago.nombre }}</td>
+                    <td>
+                        <ul>
+                            {% for detalle in pedido.detallepedido_set.all %}
+                                <li>{{ detalle.id_producto.nombre_producto }} ({{ detalle.cantidad }} unid.) - ${{ detalle.precio_unitario|intcomma }} c/u</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="no-pedidos-message">
+            <p>No hay pedidos registrados hasta el momento.</p>
+            <a href="{% url 'admin' %}" class="btn-back-admin">Volver al panel de administrador</a>
+        </div>
+    {% endif %}
+
+    {% if pedidos %}
+        <div style="text-align: center;">
+            <a href="{% url 'admin' %}" class="btn-back-admin">Volver al panel de administrador</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %} 

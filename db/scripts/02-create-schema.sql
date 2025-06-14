@@ -70,6 +70,11 @@ CREATE TABLE pedido (
     cliente_id_cliente INTEGER NOT NULL,
     id_estado_pedido INTEGER NOT NULL,
     metodo_pago_id_metodo_pago INTEGER NOT NULL,
+    transbank_transaction_date TIMESTAMP,
+    transbank_state VARCHAR(50),
+    transbank_pay_type VARCHAR(50),
+    transbank_amount INTEGER,
+    transbank_buy_order VARCHAR(50),
     reporte_id_reporte INTEGER,
     FOREIGN KEY (cliente_id_cliente) REFERENCES cliente(id_cliente) ON DELETE CASCADE,
     FOREIGN KEY (id_estado_pedido) REFERENCES estado_pedido(id_estado_pedido),
@@ -81,12 +86,9 @@ CREATE TABLE reporte (
     id_reporte SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(100) NOT NULL,
-    pedido_id_pedido INTEGER,
-    UNIQUE (pedido_id_pedido),
-    FOREIGN KEY (pedido_id_pedido) REFERENCES pedido(id_pedido)
+    pedido_id_pedido INTEGER
 );
-ALTER TABLE pedido
-ADD CONSTRAINT pedido_reporte_fk FOREIGN KEY (reporte_id_reporte) REFERENCES reporte(id_reporte);
+
 ALTER TABLE reporte OWNER TO DB_USER;
 
 
@@ -96,7 +98,6 @@ CREATE TABLE detalle_pedido (
     precio_unitario INTEGER NOT NULL,
     pedido_id_pedido INTEGER NOT NULL,
     id_producto INTEGER NOT NULL,
-    FOREIGN KEY (pedido_id_pedido) REFERENCES pedido(id_pedido) ON DELETE CASCADE,
     FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE
 );
 ALTER TABLE detalle_pedido OWNER TO DB_USER;

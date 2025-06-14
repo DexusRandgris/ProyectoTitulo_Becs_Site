@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 #from .compra import Carrito
 #from .forms import CustomAuthenticationForm,RegistroUserForm
-from .models import Producto, Cliente, Categoria
+from .models import Producto, Cliente, Categoria, Pedido, DetallePedido, EstadoPedido, MetodoPago
 from django.shortcuts import render, redirect
 from .forms import ClienteForm, ProductoForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -21,6 +21,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from . import transbank
 import datetime as dt
+from django.utils import timezone
 
 def inicio (request):
      return render(request, 'index.html')
@@ -101,9 +102,11 @@ def agregar_al_carrito(request, producto_id):
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
     producto_id = str(producto_id)
-    if producto_id in carrito:
-        carrito[producto_id] += 1
-        request.session['carrito'] = carrito
+    if producto_id in carrito and carrito[producto_id] > 1:
+        carrito[producto_id] -= 1
+    elif producto_id in carrito:
+        del carrito[producto_id]
+    request.session['carrito'] = carrito
     return redirect('carrito')
 
 def disminuir_cantidad(request, producto_id):
@@ -202,6 +205,10 @@ def agregar_producto(request):
         return render(request, 'admin.html', {'categorias': categorias})
 
 def commit_pay(request):
+    """
+    Procesa el resultado del pago realizado a través de Transbank y muestra el detalle al usuario.
+    Vacía el carrito si el pago fue exitoso.
+    """
     transaction_detail = {}
     # Buscar el token en POST o en GET
     token_ws = request.POST.get('token_ws') or request.GET.get('token_ws')
@@ -229,6 +236,66 @@ def commit_pay(request):
                     'authorization_code': response['authorization_code'],
                     'buy_order': response['buy_order'],
                 }
+                # Vaciar el carrito solo si el pago fue exitoso
+                if 'carrito' in request.session:
+                    
+                    # 1. Obtener el cliente (ajusta según tu lógica de sesión o usuario autenticado)
+                    cliente = None
+                    if request.session.get('cliente_id'):
+                        cliente_id = request.session.get('cliente_id')
+                        cliente = Cliente.objects.get(id_cliente=cliente_id)
+                    elif request.user.is_authenticated:
+                        # Si el cliente está autenticado como usuario de Django, puedes buscarlo por email o crear uno
+                        try:
+                            cliente = Cliente.objects.get(email=request.user.email)
+                        except Cliente.DoesNotExist:
+                            # Opcional: Si no existe, puedes crear un cliente a partir del usuario de Django
+                            pass # O manejar de otra forma si el cliente no está en tu modelo Cliente
+
+                    # Si no se pudo obtener un cliente, manejar el caso (ej. no registrar el pedido o registrar como invitado)
+                    if cliente:
+                        # 2. Obtener estado y método de pago (asegúrate que existan en tu base de datos)
+                        try:
+                            estado_pedido = EstadoPedido.objects.get(estado='Pagado')  # Ajusta el nombre del estado
+                        except EstadoPedido.DoesNotExist:
+                            estado_pedido = EstadoPedido.objects.create(estado='Pagado') # Crea si no existe
+
+                        try:
+                            metodo_pago = MetodoPago.objects.get(nombre='Transbank')  # Ajusta el nombre del método de pago
+                        except MetodoPago.DoesNotExist:
+                            metodo_pago = MetodoPago.objects.create(nombre='Transbank', descripcion='Pago con tarjeta via Transbank') # Crea si no existe
+
+                        # 3. Crear el pedido
+                        pedido = Pedido.objects.create(
+                            fecha_pedido=timezone.now(),
+                            cliente_id_cliente=cliente,
+                            id_estado_pedido=estado_pedido,
+                            metodo_pago_id_metodo_pago=metodo_pago,
+                            transbank_transaction_date=dt.datetime.strptime(response['transaction_date'], '%Y-%m-%dT%H:%M:%S.%fZ'),
+                            transbank_state=state,
+                            transbank_pay_type=pay_type,
+                            transbank_amount=int(response['amount']),
+                            transbank_buy_order=response['buy_order'],
+                            # Asegúrate de agregar cualquier otro campo requerido por tu modelo Pedido
+                        )
+
+                        # 4. Poblar los detalles del pedido
+                        carrito = request.session.get('carrito', {})
+                        for producto_id_str, cantidad in carrito.items():
+                            try:
+                                producto = Producto.objects.get(id_producto=producto_id_str)
+                                DetallePedido.objects.create(
+                                    pedido_id_pedido=pedido,
+                                    id_producto=producto,
+                                    cantidad=cantidad,
+                                    precio_unitario=producto.precio # Guarda el precio unitario en el momento de la compra
+                                )
+                            except Producto.DoesNotExist:
+                                # Manejar caso donde el producto no existe (ej. log error, saltar)
+                                pass
+                        
+                    del request.session['carrito']
+
             else:
                 # Transacción rechazada o fallida
                 state = 'RECHAZADO' if status == 'FAILED' else status
@@ -253,5 +320,10 @@ def commit_pay(request):
         # No se recibió el token de pago
         transaction_detail = {'error': 'No se recibió el token de pago.'}
     return render(request, 'commit_pay.html', {'transaction_detail': transaction_detail})
+
+@user_passes_test(lambda u: u.is_staff)
+def lista_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    return render(request, 'lista_pedidos.html', {'pedidos': pedidos})
 
           
