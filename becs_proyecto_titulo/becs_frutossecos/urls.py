@@ -24,5 +24,6 @@ urlpatterns = [
     path('modificar-producto/<int:producto_id>/', views.modificar_producto, name='modificar_producto'),
     path('agregar_producto/', views.agregar_producto, name='agregar_producto'),
     path('transbank', transbank.transbank_create, name='transbank'),
-    path('commit_pay', views.commit_pay, name='commit_pay')
+    path('commit_pay', views.commit_pay, name='commit_pay'),
+    path('administrador/pedidos/', views.lista_pedidos, name='lista_pedidos'),
 ]

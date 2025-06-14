@@ -176,44 +176,73 @@
   z-index: 1000;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
+
 #modal-editar-producto .modal-content {
   background: #fff8f2;
   border-radius: 16px;
-  max-width: 420px;
-  width: 95vw;
+  max-width: 480px;
+  width: 90%;
   margin: auto;
-  padding: 32px 28px 22px 28px;
+  padding: 25px 20px 20px 20px;
   box-shadow: 0 4px 24px rgba(185,122,86,0.14);
   position: relative;
   font-family: 'Segoe UI', Arial, sans-serif;
+  box-sizing: border-box;
+  max-height: 95vh;
 }
+
 #modal-editar-producto h3 {
   text-align: center;
   color: #6D452B;
-  margin-bottom: 22px;
-  font-size: 1.4em;
+  margin-bottom: 20px;
+  font-size: 1.3em;
 }
 #modal-editar-producto label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   color: #714D37;
   font-weight: bold;
 }
+
+#modal-editar-producto .form-group-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+  align-items: flex-end;
+}
+
+#modal-editar-producto .form-group-inline > div {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+#modal-editar-producto .form-group-inline > div input,
+#modal-editar-producto .form-group-inline > div select {
+  flex: 1;
+}
+
 #modal-editar-producto input[type="text"],
 #modal-editar-producto input[type="number"],
 #modal-editar-producto textarea,
 #modal-editar-producto select {
+  width: 100%;
+  box-sizing: border-box;
   background: #fff8f2;
   border: 1.5px solid #e7ae78;
   color: #714D37;
   border-radius: 8px;
-  font-size: 16px;
-  padding: 10px 12px;
-  margin-bottom: 18px;
+  font-size: 15px;
+  padding: 9px 10px;
+  margin-bottom: 0;
   box-shadow: 0 1px 4px rgba(185,122,86,0.04);
   transition: border 0.2s, box-shadow 0.2s, background 0.2s;
 }
+
 #modal-editar-producto input[type="text"]:focus,
 #modal-editar-producto input[type="number"]:focus,
 #modal-editar-producto textarea:focus,
@@ -223,14 +252,15 @@
   box-shadow: 0 2px 8px rgba(185,122,86,0.10);
   outline: none;
 }
+
 #modal-editar-producto input[type="file"] {
   background: #fff8f2;
   border: 1.5px solid #e7ae78;
   border-radius: 8px;
   padding: 8px 0 8px 8px;
   color: #714D37;
-  margin-bottom: 18px;
-  font-size: 15px;
+  margin-bottom: 15px;
+  font-size: 14px;
 }
 #modal-editar-producto input[type="file"]:focus {
   border: 1.5px solid #b97a56;
@@ -238,8 +268,9 @@
   outline: none;
 }
 #modal-editar-producto textarea {
-  min-height: 48px;
+  min-height: 60px;
   resize: vertical;
+  margin-bottom: 15px;
 }
 #modal-editar-producto select {
   cursor: pointer;
@@ -277,20 +308,35 @@
   color: #e57373;
 }
 #edit-imagen-actual {
+  max-width: 80px;
+  height: auto;
   display: block;
   margin-bottom: 10px;
-  max-width: 120px;
-  max-height: 120px;
-  border-radius: 8px;
-  border: 1.5px solid #e7ae78;
-  background: #fff;
+  border-radius:8px;
+  border:1.5px solid #e7ae78;
+  background:#fff;
 }
 @media (max-width: 600px) {
   #modal-editar-producto .modal-content {
-    padding: 18px 6vw 14px 6vw;
-    max-width: 98vw;
+    padding: 15px;
+    width: 98%;
+    max-width: 98%;
   }
   #modal-editar-producto h3 {
     font-size: 1.1em;
+    margin-bottom: 15px;
+  }
+  #modal-editar-producto .form-group-inline {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+  }
+  #modal-editar-producto .form-group-inline > div {
+    width: 100%;
+    min-width: unset;
+    margin-bottom: 15px;
+  }
+  #modal-editar-producto .form-group-inline > div:last-child {
+    margin-bottom: 0;
   }
 }

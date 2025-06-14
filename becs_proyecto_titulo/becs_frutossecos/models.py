@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 #from django.contrib.auth.models import AbstractUser
 
 class Carrito(models.Model):
@@ -89,10 +90,15 @@ class MetodoPago(models.Model):
 
 class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
-    fecha_pedido = models.DateTimeField()
+    fecha_pedido = models.DateTimeField(default=timezone.now)
     cliente_id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='cliente_id_cliente')
     id_estado_pedido = models.ForeignKey(EstadoPedido, models.DO_NOTHING, db_column='id_estado_pedido')
     metodo_pago_id_metodo_pago = models.ForeignKey(MetodoPago, models.DO_NOTHING, db_column='metodo_pago_id_metodo_pago')
+    transbank_transaction_date = models.DateTimeField(blank=True, null=True)
+    transbank_state = models.CharField(max_length=50, blank=True, null=True)
+    transbank_pay_type = models.CharField(max_length=50, blank=True, null=True)
+    transbank_amount = models.IntegerField(blank=True, null=True)
+    transbank_buy_order = models.CharField(max_length=50, blank=True, null=True)
     reporte_id_reporte = models.ForeignKey('Reporte', models.DO_NOTHING, db_column='reporte_id_reporte', blank=True, null=True)
 
     class Meta:

@@ -1,5 +1,6 @@
 import requests
 from django.shortcuts import render, redirect
+import uuid
 
 # MÉTODO QUE CREA LA CABECERA SOLICITADA POR TRANSBANK EN UN REQUEST (SOLICITUD)
 def header_request_transbank():
@@ -27,9 +28,13 @@ def transbank_create(request):
             return render(request, 'carrito.html', {'error': 'No se recibió el monto'})
     else:
         amount = 0
+
+    #Generar numero de orden aleatorio
+    buy_order = str(uuid.uuid4())[:26]
+
     data = {
-        "buy_order" : 500,
-        "session_id" : 150,
+        "buy_order" : buy_order,
+        "session_id" : str(request.session.session_key),
         "amount" : int(amount),
         "return_url" : "http://localhost:8000/commit_pay"
     }
