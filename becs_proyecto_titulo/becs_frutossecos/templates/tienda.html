@@ -4,6 +4,29 @@
 {% block content %}
 <h1 align="center">Productos</h1>
 
+<!-- Buscador y filtros -->
+<form method="get" class="buscador-filtros" style="display: flex; align-items: center; gap: 10px; margin-bottom: 30px; justify-content: center;">
+    <!-- Icono de filtro -->
+    <span style="color: #6B4F3A; font-size: 18px;">
+        <i class="fas fa-sliders-h"></i>
+    </span>
+    <!-- Icono de búsqueda -->
+    <span style="color: #6B4F3A; font-size: 18px;">
+        <i class="fas fa-search"></i>
+    </span>
+    <!-- Input de búsqueda -->
+    <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
+    <!-- Ordenar -->
+    <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Defecto</option>
+    <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
+    <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
+    <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
+    </select>
+    <!-- Botón buscar -->
+    <button type="submit" style="border-radius: 20px; background: #6B4F3A; color: #fff; border: none; padding: 6px 18px;">Buscar</button>
+</form>
+
 <div class="productos-container">
     {% for producto in productos %}
     <div class="producto-tienda">

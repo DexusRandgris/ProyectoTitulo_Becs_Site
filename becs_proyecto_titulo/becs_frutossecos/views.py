@@ -22,6 +22,7 @@ from django.http import HttpResponse
 from . import transbank
 import datetime as dt
 from django.utils import timezone
+from django.db.models.functions import Lower
 
 def inicio (request):
      return render(request, 'index.html')
@@ -119,8 +120,24 @@ def disminuir_cantidad(request, producto_id):
     request.session['carrito'] = carrito
     return redirect('carrito')
 
-def tiendabecs (request):
+def tiendabecs(request):
     productos = Producto.objects.all()
+
+    # Obtener parámetros GET
+    q = request.GET.get('q', '')
+    orden = request.GET.get('orden', '')
+
+    # Filtro de búsqueda
+    if q:
+        productos = productos.filter(nombre_producto__icontains=q)
+    # Orden
+    if orden == 'precio_desc':
+        productos = productos.order_by('-precio')
+    elif orden == 'precio_asc':
+        productos = productos.order_by('precio')
+    elif orden == 'nombre_asc':
+        productos = productos.order_by(Lower('nombre_producto').asc())
+
     return render(request, 'tienda.html', {'productos': productos})
 
 def salir(request):

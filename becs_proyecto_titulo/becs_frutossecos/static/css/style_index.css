@@ -360,10 +360,19 @@ html, body {
   }
   /* ===== Sección Instagram ===== */
 .instagram-section {
-    background-color: #FAF7F0;      /* tono suave */
-    padding: 3rem 1rem;
-    margin-top: 2rem;
-  }
+    border-radius: 0;
+    box-shadow: 0 2px 16px rgba(113,77,55,0.07);
+    width: 100vw;
+    max-width: 100vw;
+    margin: 2rem 0 2rem 0 !important;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    border: 1px solid #e3c7a6;
+    background: linear-gradient(135deg, #f5e7d6 80%, #fbeee0 100%);
+    position: relative;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+}
   
   .instagram-title {
     font-family: "Zilla Slab", serif;
@@ -372,25 +381,68 @@ html, body {
     text-align: center;
     margin-bottom: 2rem;
   }
-  
+  .instagram-subtitle {
+    text-align: center;
+    color: #a97c50;
+    font-size: 1.1rem;
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+    font-family: "Zilla Slab", serif;
+}
   /* Grid responsivo de embeds */
-  .instagram-posts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-  
-  /* Ajustes para que los embeds escalen bien */
-  .instagram-posts blockquote {
+.instagram-posts {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 90px;
+    width: 100%;
+}
+
+.instagram-posts blockquote.instagram-media {
+    flex: 0 0 250px !important;
+    width: 250px !important;
+    height: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
     margin: 0 !important;
-  }
-  .instagram-posts iframe {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
+    padding: 0 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.instagram-posts blockquote.instagram-media iframe {
+    width: 250px !important;
+    height: 250px !important;
+    min-width: 250px !important;
+    min-height: 250px !important;
+    max-width: 250px !important;
+    max-height: 250px !important;
+}
+.btn-instagram {
+    display: inline-block;
+    background: #a97c50;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.btn-instagram:hover {
+    background: #714D37;
+    color: #fff;
+}
+
+
   /* ===== Responsive general ===== */
 @media (max-width: 1200px) {
   /* Carousel: menos alto en pantallas medianas */
@@ -474,12 +526,6 @@ html, body {
     .grid-contenedor,
     .contenedor-opinion,
     .destacados-grid,
-    .instagram-posts {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 1.5rem;
-      padding: 0 1rem;
-    }
     /* Tarjeta “más” ocupa todo el ancho */
     .destacado-more {
       grid-column: 1 / -1;
