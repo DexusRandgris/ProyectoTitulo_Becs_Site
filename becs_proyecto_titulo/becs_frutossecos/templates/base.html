@@ -16,6 +16,7 @@
     <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
     <title>Becs Frutos Secos</title>
 </head>
+
 <body>
     <header class="header">
         <div class="logo">
@@ -66,8 +67,25 @@
                       </li>
                     <div class="barra-carrito">
                         <div class="contenedor-carrito">
-                          <a href="/carrito" class="carrito-link">
+                          <a href="/carrito" class="carrito-link" style="position: relative;">
                             <i class="fas fa-shopping-cart"></i> 
+                             <span class="carrito-contador" style="
+                                position: absolute;
+                                top: -10px;
+                                right: -10px;
+                                background-color: #ff0000;
+                                color: #fff;
+                                border-radius: 50%;
+                                width: 20px;
+                                height: 20px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding: 2px 6px;
+                                font-size: 13px;
+                                font-weight: bold;
+                            ">{{ request.session.carrito|length }}
+                            </span>
                           </a>
                         </div>
                     </div>
