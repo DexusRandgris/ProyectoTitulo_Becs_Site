@@ -62,25 +62,75 @@
 }
 
 /* === Total Carrito === */
+/* .fixed-bottom-total-bar { ... } */
+
+.carrito-total-bar {
+  width: 100%;
+  padding: 20px 0 20px 0;
+  margin-top: 32px;
+}
+
 .carrito-total-container {
+  max-width: 900px;
+  margin: 0 auto;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  margin: 30px auto 0 auto;
-  max-width: 700px;
-  padding: 18px 28px 0 28px;
+  justify-content: center;
+  gap: 32px;
+  border-radius: 18px 18px 18px 18px;
+  background: #f5e1d3;
+  padding: 10px ;
+  box-shadow: 0 0 8px rgba(185,122,86,0.08);
 }
+
 .carrito-total-label {
-  font-size: 1.2rem;
-  color: #714D37;
-  font-weight: bold;
-  margin-right: 10px;
-}
-.carrito-total-monto {
   font-size: 1.4rem;
-  color: #b97a56;
   font-weight: bold;
-  letter-spacing: 1px;
+  color: #8b5c3a;
+  margin-right: 8px;
+}
+
+.carrito-total-monto {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #b97a56;
+  margin-right: 24px;
+}
+
+.botones-acciones {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-eliminar-carrito {
+  background: #ffbcc2;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  transition: background 0.2s;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.btn-eliminar-carrito:hover {
+  background: #e57373;
+}
+
+.btn-pagar {
+  background: #8b5c3a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(185,122,86,0.10);
+}
+.btn-pagar:hover {
+  background: #b97a56;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* Acciones del carrito (columna derecha) */
@@ -114,22 +164,6 @@
 .btn-incrementar-cantidad:hover,
 .btn-disminuir-cantidad:hover {
   background: #f3c88a;
-}
-
-.btn-eliminar-carrito {
-  background: #e57373;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  transition: background 0.2s;
-}
-.btn-eliminar-carrito:hover {
-  background: #c0392b;
 }
 
 .carrito-cantidad span {
