@@ -103,10 +103,8 @@ def agregar_al_carrito(request, producto_id):
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
     producto_id = str(producto_id)
-    if producto_id in carrito and carrito[producto_id] > 1:
-        carrito[producto_id] -= 1
-    elif producto_id in carrito:
-        del carrito[producto_id]
+    if producto_id in carrito:
+        carrito[producto_id] += 1
     request.session['carrito'] = carrito
     return redirect('carrito')
 
@@ -341,6 +339,17 @@ def commit_pay(request):
 @user_passes_test(lambda u: u.is_staff)
 def lista_pedidos(request):
     pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    dia = request.GET.get('dia')
+    mes = request.GET.get('mes')
+    anio = request.GET.get('anio')
+
+    if dia:
+        pedidos = pedidos.filter(fecha_pedido__day=dia)
+    if mes:
+        pedidos = pedidos.filter(fecha_pedido__month=mes)
+    if anio:
+        pedidos = pedidos.filter(fecha_pedido__year=anio)
+
     return render(request, 'lista_pedidos.html', {'pedidos': pedidos})
 
           
