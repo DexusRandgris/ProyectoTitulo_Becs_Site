@@ -1,6 +1,7 @@
 import requests
 from django.shortcuts import render, redirect
 import uuid
+from django.contrib.auth.decorators import login_required
 
 # MÉTODO QUE CREA LA CABECERA SOLICITADA POR TRANSBANK EN UN REQUEST (SOLICITUD)
 def header_request_transbank():
@@ -19,7 +20,22 @@ def header_request_transbank():
                 } 
     return headers   
 
+# Función personalizada para validar autenticación
+def require_auth(view_func):
+    def wrapper(request, *args, **kwargs):
+        # Verificar si es usuario de Django autenticado
+        if request.user.is_authenticated:
+            return view_func(request, *args, **kwargs)
+        # Verificar si es cliente autenticado en sesión
+        elif request.session.get('cliente_id'):
+            return view_func(request, *args, **kwargs)
+        else:
+            # Redirigir al login si no está autenticado
+            return redirect('iniciosesion')
+    return wrapper
+
 # DEFINICIÓN DE RUTA API REST, PERMITIENDO SOLO SER LLAMADO POR POST
+@require_auth
 def transbank_create(request):
     print('transbank_create')
     if request.method == 'POST':

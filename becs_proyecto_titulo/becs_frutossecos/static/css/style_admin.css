@@ -16,20 +16,25 @@
   }
   
   .boton {
-    padding: 20px 20px;
-    font-size: 15px;
-    background:  #e7ae78;
+    background-color: #e7ae78;
     color: #6D452B;
+    padding: 12px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background 0.3s ease;
-    font-weight: bold; 
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
   }
   
   .boton:hover {
-    background: #6D452B;
-    color: rgba(255, 255, 255, 0.9);
+    background-color: #6D452B;
+    color: white;
+    transform: translateY(-2px);
   }
   
   .grande {
@@ -338,5 +343,83 @@
   }
   #modal-editar-producto .form-group-inline > div:last-child {
     margin-bottom: 0;
+  }
+}
+
+/* === Estilos para Notificaciones/Mensajes === */
+.mensajes {
+  position: fixed;
+  top: 90px; /* Ajusta según la altura de tu header */
+  right: 25px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 350px;
+}
+
+.mensaje {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95em;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateX(120%);
+  opacity: 0;
+  animation: slideInAndOut 5s forwards;
+  /* La animación dura 5s: 0.5s para entrar, 4s visible, 0.5s para salir */
+}
+
+/* Icono antes del texto (usando Font Awesome que ya tienes) */
+.mensaje::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1.3em;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+/* Estilo para mensajes de ÉXITO (success) */
+.mensaje.success {
+  background: linear-gradient(135deg, #28a745, #218838);
+}
+.mensaje.success::before {
+  content: "\f058"; /* ícono check-circle */
+}
+
+/* Estilo para mensajes de ERROR (error) */
+.mensaje.error {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+.mensaje.error::before {
+  content: "\f06a"; /* ícono exclamation-circle */
+}
+
+/* Estilo para mensajes de ADVERTENCIA (warning) */
+.mensaje.warning {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #333;
+}
+.mensaje.warning::before {
+  content: "\f071"; /* ícono exclamation-triangle */
+}
+
+/* Animación de entrada y salida */
+@keyframes slideInAndOut {
+  0% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  10%, 90% { /* Entra en el primer 10%, empieza a salir en el último 10% */
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
   }
 }

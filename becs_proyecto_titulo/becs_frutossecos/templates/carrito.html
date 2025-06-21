@@ -70,11 +70,18 @@
         </button>
       </form>
 
-      <form method="POST" action="{% url 'transbank' %}">
-        {% csrf_token %}
-        <input type="hidden" name="amount" value="{{ total }}">
-        <button type="submit" class="btn-pagar">PAGAR</button>
-      </form>
+      {% if user.is_authenticated or request.session.cliente_id %}
+        <form method="POST" action="{% url 'transbank' %}">
+          {% csrf_token %}
+          <input type="hidden" name="amount" value="{{ total }}">
+          <button type="submit" class="btn-pagar">PAGAR</button>
+        </form>
+      {% else %}
+        <div style="text-align: center;">
+          <p style="color: #e57373; margin-bottom: 10px; font-weight: bold;">Debes iniciar sesión para continuar</p>
+          <a href="{% url 'iniciosesion' %}" class="btn-pagar" style="text-decoration: none; display: inline-block;">INICIAR SESIÓN</a>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>

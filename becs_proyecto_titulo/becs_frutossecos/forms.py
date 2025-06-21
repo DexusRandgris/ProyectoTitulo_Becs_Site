@@ -111,17 +111,23 @@ from django import forms
 from .models import Cliente, Producto
 
 class ClienteForm(forms.ModelForm):
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
+    password2 = forms.CharField(label='Confirmar Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar Contraseña'}))
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'apellido', 'email']
+        fields = ['nombre', 'apellido', 'email', 'direccion']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
-            'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'})
+            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre'}),
+            'apellido': forms.TextInput(attrs={'placeholder': 'Apellido'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}),
+            'direccion': forms.TextInput(attrs={'placeholder': 'Dirección de envío'})
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
