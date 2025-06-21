@@ -35,6 +35,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Redirección para el login
+LOGIN_URL = 'iniciosesion'
 
 # Application definition
 

@@ -25,8 +25,9 @@ class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    email = models.CharField(unique=True, max_length=100)
     contraseña = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
 
     class Meta:
         managed = False

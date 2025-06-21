@@ -112,19 +112,23 @@
             padding: 10px;
             font-size: 0.85em;
         }
-        .pedidos-table td:nth-child(3), /* Cliente */
-        .pedidos-table td:nth-child(5) { /* Método de pago */
-            display: none; /* Ocultar en móviles para tablas más compactas */
+        .pedidos-table td:nth-child(4), /* Cliente */
+        .pedidos-table td:nth-child(5), /* Dirección */
+        .pedidos-table td:nth-child(7) { /* Método de pago */
+            display: none; 
         }
-        .pedidos-table th:nth-child(3), /* Cliente */
-        .pedidos-table th:nth-child(5) { /* Método de pago */
+        .pedidos-table th:nth-child(4), /* Cliente */
+        .pedidos-table th:nth-child(5), /* Dirección */
+        .pedidos-table th:nth-child(7) { /* Método de pago */
             display: none;
         }
     }
 
     @media (max-width: 480px) {
-        .pedidos-table td:nth-child(2), /* Fecha */
-        .pedidos-table th:nth-child(2) {
+        .pedidos-table td:nth-child(2), /* Orden Transbank */
+        .pedidos-table th:nth-child(2),
+        .pedidos-table td:nth-child(3), /* Fecha */
+        .pedidos-table th:nth-child(3) {
             display: none;
         }
         .pedidos-title {
@@ -176,6 +180,7 @@
                     <th>Orden Transbank</th>
                     <th>Fecha</th>
                     <th>Cliente</th>
+                    <th>Dirección</th>
                     <th>Estado</th>
                     <th>Método de Pago</th>
                     <th>Detalle del Pedido</th>
@@ -188,6 +193,7 @@
                     <td>{{ pedido.transbank_buy_order }}</td>
                     <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
                     <td>{{ pedido.cliente_id_cliente.nombre }} {{ pedido.cliente_id_cliente.apellido }}</td>
+                    <td>{{ pedido.cliente_id_cliente.direccion }}</td>
                     <td>{{ pedido.id_estado_pedido.estado }}</td>
                     <td>{{ pedido.metodo_pago_id_metodo_pago.nombre }}</td>
                     <td>

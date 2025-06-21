@@ -29,6 +29,9 @@ def inicio (request):
 
 def iniciosesion(request):
     if request.method == 'GET':
+        # Si el usuario es redirigido a login, muestra un mensaje.
+        if 'next' in request.GET:
+            messages.warning(request, 'Debes iniciar sesión para acceder a esa página.')
         return render(request, 'inicio_sesion.html')
     else:
         email = request.POST.get('username')

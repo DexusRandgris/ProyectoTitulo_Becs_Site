@@ -25,7 +25,8 @@ CREATE TABLE cliente (
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(100) NOT NULL
+    contraseña VARCHAR(100) NOT NULL,
+    direccion VARCHAR(200) NOT NULL
 );
 ALTER TABLE cliente OWNER TO DB_USER;
 
@@ -251,5 +252,15 @@ INSERT INTO public.producto VALUES(7,'Aliño completo','100grs',900,100,'product
 INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'productos/almendraentera.png',6);
 
 --Poblar tabla cliente
-INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004');
-INSERT INTO public.cliente VALUES(2, 'Cliente', 'Becs', 'becs.cliente@gmail.com', '1234567890');
+INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004', '123 Main St');
+INSERT INTO public.cliente VALUES(2, 'Cliente', 'Becs', 'becs.cliente@gmail.com', '1234567890', '456 Elm St');
+
+-- AL FINAL DEL ARCHIVO, SINCRONIZACIÓN DE SECUENCIAS
+-- Esto asegura que los contadores de ID de PostgreSQL estén alineados con los datos insertados manualmente.
+
+SELECT setval('categoria_id_categoria_seq', COALESCE((SELECT MAX(id_categoria) FROM categoria), 1), true);
+SELECT setval('producto_id_producto_seq', COALESCE((SELECT MAX(id_producto) FROM producto), 1), true);
+SELECT setval('cliente_id_cliente_seq', COALESCE((SELECT MAX(id_cliente) FROM cliente), 1), true);
+SELECT setval('rol_id_rol_seq', COALESCE((SELECT MAX(id_rol) FROM rol), 1), true);
+SELECT setval('estado_pedido_id_estado_pedido_seq', COALESCE((SELECT MAX(id_estado_pedido) FROM estado_pedido), 1), true);
+SELECT setval('metodo_pago_id_metodo_pago_seq', COALESCE((SELECT MAX(id_metodo_pago) FROM metodo_pago), 1), true);

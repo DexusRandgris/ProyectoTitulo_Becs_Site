@@ -5,11 +5,21 @@
 <h2 align="center">Vista administrador</h2>
 <div class="panel-botones">
     <div class="grid-botones">
-      <button class="boton" id="btn-agregar">Agregar producto</button>
-      <button class="boton" id="btn-modificar">Modificar producto</button>
-      <button class="boton" id="btn-eliminar">Eliminar producto</button>
-      <button class="boton" id="btn-lista">Listado de productos</button>
-      <a href="{% url 'lista_pedidos' %}" class="boton" style="text-decoration: none; display: inline-block; text-align: center;">Listado de pedidos</a>
+      <button class="boton" id="btn-agregar">
+        <i class="bi bi-plus-circle"></i> Agregar producto
+      </button>
+      <button class="boton" id="btn-modificar">
+        <i class="bi bi-pencil-square"></i> Modificar producto
+      </button>
+      <button class="boton" id="btn-eliminar">
+        <i class="bi bi-trash"></i> Eliminar producto
+      </button>
+      <button class="boton" id="btn-lista">
+        <i class="bi bi-card-list"></i> Listado de productos
+      </button>
+      <a href="{% url 'lista_pedidos' %}" class="boton" style="text-decoration: none;">
+        <i class="bi bi-box-seam"></i> Listado de pedidos
+      </a>
     </div>
   </div>
 
@@ -78,6 +88,7 @@
         <div style="flex:1;">
           <div style="color:#714D37; font-weight:600; font-size:1.1em;">{{ producto.nombre_producto }}</div>
           <div style="color:#b97a56; font-size:0.98em; margin-bottom:4px;">{{ producto.descripcion }}</div>
+          <div style="color:#b97a56; font-size:0.98em; margin-bottom:4px;">Stock: {{ producto.stock }}</div>
           <div style="color:#6D452B; font-size:0.97em;">Categoría: <span style="font-weight:500;">{{ producto.id_categoria.nombre }}</span></div>
         </div>
         <div style="color:#714D37; font-weight:bold; font-size:1.1em; min-width:90px; text-align:right;">${{ producto.precio|intcomma }}</div>

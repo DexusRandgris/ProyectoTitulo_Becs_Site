@@ -6,6 +6,7 @@ html, body {
   background-color: #E6CCB3 !important;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 /* ===== Sección Productos & Opiniones ===== */
@@ -255,7 +256,7 @@ html, body {
     margin-top: 0;
   }
   
-  /* Header igual a “Nuestros productos” */
+  /* Header igual a "Nuestros productos" */
   .destacados-header {
     background-color: #DEB893;
     text-align: center;
@@ -279,13 +280,13 @@ html, body {
   .destacados-grid {
     display: grid;
     grid-template-columns: 250px repeat(auto-fit, 160px);
-    grid-auto-rows: 200px;  /* altura de cada “fila” */
+    grid-auto-rows: 200px;  /* altura de cada "fila" */
     gap: 1.5rem;
     padding: 2rem 1rem;
     justify-content: center;
   }
   
-  /* — Tarjeta “Revisa más” — */
+  /* — Tarjeta "Revisa más" — */
   .destacado-more {
     grid-row: span 2;       /* ocupa dos filas */
     width: 100%;
@@ -391,40 +392,22 @@ html, body {
 }
   /* Grid responsivo de embeds */
 .instagram-posts {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 90px;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem; /* Un poco más de espacio entre posts */
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .instagram-posts blockquote.instagram-media {
-    flex: 0 0 250px !important;
-    width: 250px !important;
-    height: 250px !important;
-    min-width: 250px !important;
-    max-width: 250px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border-radius: 18px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.instagram-posts blockquote.instagram-media iframe {
-    width: 250px !important;
-    height: 250px !important;
-    min-width: 250px !important;
-    min-height: 250px !important;
-    max-width: 250px !important;
-    max-height: 250px !important;
+  /* Forzamos a la publicación a ocupar el espacio de la celda de la cuadrícula */
+  width: 100% !important;
+  min-width: auto !important; /* Sobrescribimos el ancho mínimo problemático */
+  margin: 0 !important; /* Eliminamos márgenes que puedan causar problemas */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border-radius: 8px; /* Bordes redondeados */
+  overflow: hidden; /* Asegura que el contenido del post no se desborde */
 }
 .btn-instagram {
     display: inline-block;
@@ -479,7 +462,7 @@ html, body {
     font-size: 0.95rem;
   }
 
-  /* Destacados: tarjeta “más” no tan alta */
+  /* Destacados: tarjeta "más" no tan alta */
   .destacados-grid {
     grid-auto-rows: 180px;
   }
@@ -526,7 +509,7 @@ html, body {
     .grid-contenedor,
     .contenedor-opinion,
     .destacados-grid,
-    /* Tarjeta “más” ocupa todo el ancho */
+    /* Tarjeta "más" ocupa todo el ancho */
     .destacado-more {
       grid-column: 1 / -1;
       grid-row: auto;
