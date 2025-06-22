@@ -67,29 +67,30 @@
                         </ul>
                       </li>
                     <div class="barra-carrito">
-                        <div class="contenedor-carrito">
-                          <a href="/carrito" class="carrito-link" style="position: relative;">
-                            <i class="fas fa-shopping-cart"></i> 
-                             <span class="carrito-contador" style="
-                                position: absolute;
-                                top: -10px;
-                                right: -10px;
-                                background-color: #ff0000;
-                                color: #fff;
-                                border-radius: 50%;
-                                width: 20px;
-                                height: 20px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 2px 6px;
-                                font-size: 13px;
-                                font-weight: bold;
-                            ">{{ request.session.carrito|length }}
-                            </span>
-                          </a>
-                        </div>
-                    </div>
+    <div class="contenedor-carrito">
+        <a href="/carrito" class="carrito-link" style="position: relative;">
+            <i class="fas fa-shopping-cart"></i> 
+            <span id="contador-carrito" class="carrito-contador" style="
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background-color: #ff0000;
+                color: #fff;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2px 6px;
+                font-size: 13px;
+                font-weight: bold;
+            ">
+          <span id="contador-carrito">{{ total_unidades_carrito }}</span>
+            </span>
+        </a>
+    </div>
+</div>  
                 {% endif %}
             </ul>
         </nav>

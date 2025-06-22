@@ -1,57 +1,87 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+
 {% block content %}
 <h1 align="center">Productos</h1>
 
 <!-- Buscador y filtros -->
 <form method="get" class="buscador-filtros" style="display: flex; align-items: center; gap: 10px; margin-bottom: 30px; justify-content: center;">
-    <!-- Icono de filtro -->
-    <span style="color: #6B4F3A; font-size: 18px;">
-        <i class="fas fa-sliders-h"></i>
-    </span>
-    <!-- Icono de búsqueda -->
-    <span style="color: #6B4F3A; font-size: 18px;">
-        <i class="fas fa-search"></i>
-    </span>
-    <!-- Input de búsqueda -->
+    <i class="fas fa-sliders-h" style="color: #6B4F3A; font-size: 18px;"></i>
+    <i class="fas fa-search" style="color: #6B4F3A; font-size: 18px;"></i>
     <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
-    <!-- Ordenar -->
     <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
         <option value="">Defecto</option>
-    <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
-    <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
-    <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
+        <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
+        <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
+        <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
     </select>
-    <!-- Botón buscar -->
     <button type="submit" style="border-radius: 20px; background: #6B4F3A; color: #fff; border: none; padding: 6px 18px;">Buscar</button>
 </form>
 
 <div class="productos-container">
     {% for producto in productos %}
     <div class="producto-tienda">
-      <img class="logo-producto" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}">
-      <p>
-        <div class="nombre-container">
-          {{producto.nombre_producto}} <br>
-        </div>
-        <div class="descripcion-container">
-          {{producto.descripcion}} <br>
-        </div>
-        <div class="precio-container"> 
-          ${{producto.precio|intcomma}} <br><br>
-        </div>
+        <img class="logo-producto" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}">
+
+        <div class="nombre-container">{{ producto.nombre_producto }}</div>
+        <div class="descripcion-container">{{ producto.descripcion }}</div>
+        <div class="precio-container">${{ producto.precio|intcomma }}</div>
+
         <form method="POST" action="{% url 'agregar_al_carrito' producto.id_producto %}">
-          {% csrf_token %}
-          <button class="btn-agregar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16" style="margin-right: 8px;">
-              <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
-            </svg>
-            Agregar producto
-          </button>
+            {% csrf_token %}
+            <button class="btn-agregar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16" style="margin-right: 8px;">
+                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
+                </svg>
+                Agregar producto
+            </button>
         </form>
-      </p>
     </div>
     {% endfor %}
 </div>
+
+<!-- Mensaje de éxito/error -->
+<div id="mensaje-carrito" style="display:none; position:fixed; top:60px; right:20px; background:#6B4F3A; color:#fff; padding:12px 24px; border-radius:8px; z-index:1000;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.producto-tienda form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                mostrarMensaje(data.exito ? '¡Producto agregado correctamente al carrito!' : 'Hubo un error al agregar el producto.', data.exito);
+                if (data.exito && typeof data.total !== 'undefined') {
+                    const contador = document.getElementById('contador-carrito');
+                    if (contador) {
+                        contador.textContent = data.total;
+                    }
+                }
+            })
+            .catch(() => {
+                mostrarMensaje('Hubo un error al agregar el producto.', false);
+            });
+        });
+    });
+
+    function mostrarMensaje(texto, exito) {
+        const mensaje = document.getElementById('mensaje-carrito');
+        mensaje.textContent = texto;
+        mensaje.style.background = exito ? '#6B4F3A' : '#c0392b';
+        mensaje.style.display = 'block';
+        setTimeout(() => mensaje.style.display = 'none', 2000);
+    }
+});
+</script>
 {% endblock %}

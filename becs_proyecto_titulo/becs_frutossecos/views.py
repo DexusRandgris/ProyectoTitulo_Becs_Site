@@ -74,13 +74,15 @@ def registrar(request):
 
 def carrito(request):
     carrito = request.session.get('carrito', {})
-    # Si el carrito es una lista antigua, conviértelo a dict
     if isinstance(carrito, list):
         carrito = {str(pid): 1 for pid in carrito}
         request.session['carrito'] = carrito
+
     productos = Producto.objects.filter(id_producto__in=carrito.keys())
     productos_info = []
     total = 0
+    total_unidades_carrito = sum(carrito.values())  # 👈 suma de unidades
+
     for producto in productos:
         cantidad = carrito.get(str(producto.id_producto), 1)
         subtotal = producto.precio * cantidad
@@ -90,9 +92,18 @@ def carrito(request):
             'cantidad': cantidad,
             'subtotal': subtotal,
         })
-    return render(request, 'carrito.html', {'productos_info': productos_info, 'total': total})
+
+    return render(request, 'carrito.html', {
+        'productos_info': productos_info,
+        'total': total,
+        'total_unidades_carrito': total_unidades_carrito  
+    })
+
+from django.http import JsonResponse
+from django.shortcuts import redirect
 
 def agregar_al_carrito(request, producto_id):
+    exito = False
     if request.method == 'POST':
         carrito = request.session.get('carrito', {})
         producto_id = str(producto_id)
@@ -101,7 +112,13 @@ def agregar_al_carrito(request, producto_id):
         else:
             carrito[producto_id] = 1
         request.session['carrito'] = carrito
-    return redirect('tienda')
+        exito = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        total = sum(carrito.values())
+        return JsonResponse({'exito': exito, 'total': total})
+    else:
+        return redirect('tienda')
 
 def incrementar_cantidad(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -124,14 +141,13 @@ def disminuir_cantidad(request, producto_id):
 def tiendabecs(request):
     productos = Producto.objects.all()
 
-    # Obtener parámetros GET
+    #obtener parámetros GET
     q = request.GET.get('q', '')
     orden = request.GET.get('orden', '')
 
-    # Filtro de búsqueda
+    #filtro de búsqueda
     if q:
         productos = productos.filter(nombre_producto__icontains=q)
-    # Orden
     if orden == 'precio_desc':
         productos = productos.order_by('-precio')
     elif orden == 'precio_asc':
@@ -139,7 +155,14 @@ def tiendabecs(request):
     elif orden == 'nombre_asc':
         productos = productos.order_by(Lower('nombre_producto').asc())
 
-    return render(request, 'tienda.html', {'productos': productos})
+    #calculamos la cantidad total de unidades del carrito
+    carrito = request.session.get('carrito', {})
+    total_unidades_carrito = sum(carrito.values())
+
+    return render(request, 'tienda.html', {
+        'productos': productos,
+        'total_unidades_carrito': total_unidades_carrito
+    })
 
 def salir(request):
     logout(request)
