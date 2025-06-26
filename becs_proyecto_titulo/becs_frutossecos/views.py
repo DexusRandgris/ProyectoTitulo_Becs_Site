@@ -26,7 +26,8 @@ from django.db.models.functions import Lower
 
 def inicio (request):
      return render(request, 'index.html')
-
+def quienesomos(request):
+    return render(request, 'quienessomos.html')
 def iniciosesion(request):
     if request.method == 'GET':
         # Si el usuario es redirigido a login, muestra un mensaje.

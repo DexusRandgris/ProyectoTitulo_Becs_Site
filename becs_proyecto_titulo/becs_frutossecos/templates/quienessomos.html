@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section style="padding: 3rem 1.5rem; max-width: 1100px; margin: 0 auto;">
+  <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center;">
+    
+    <!-- Imagen familiar (puedes reemplazar la URL por una subida tuya) -->
+    <div style="flex: 1 1 350px; text-align: center;">
+      <img src="{% static 'img/familia.jpg' %}" alt="Nuestra familia" style="max-width: 100%; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+    </div>
+
+    <!-- Texto principal -->
+    <div style="flex: 1 1 500px; background-color: #f7e3cd; padding: 2rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <h1 style="font-size: 2.2rem; margin-bottom: 1rem; color: #654640; text-align: center;">Quiénes Somos</h1>
+        Somos una <strong>pyme familiar</strong> ubicada en <strong>Maipú</strong>, nacida a mediados del <strong>2024</strong> con un gran sueño: construir un negocio que le diera estabilidad a nuestros padres en su vejez y, al mismo tiempo, nos permitiera compartir algo bueno con nuestra comunidad.
+      </p>
+      <p style="margin-top: 1rem;">
+        Aquí trabajamos juntos en familia. Le ponemos corazón a todo lo que hacemos, y eso se nota desde el primer saludo hasta cuando eliges tus productos.
+      </p>
+      <p style="margin-top: 1rem;">
+        Somos una <strong>tostaduría a granel</strong>, y ofrecemos una gran variedad de <strong>frutos secos, deshidratados, harinas, legumbres, aliños</strong>, y por supuesto, nuestro querido <strong>mote con huesillo</strong>.
+      </p>
+      <p style="margin-top: 1rem;">
+        Todo en las cantidades que tú necesites, sin plástico innecesario y con la frescura que solo un local de confianza puede ofrecer.
+      </p>
+      <p style="margin-top: 1rem;">
+        Aceptamos <strong>Edenred</strong> y <strong>Pluxee</strong> (¡con código QR!), y realizamos envíos por todo <strong>Santiago</strong>, porque sabemos que la comodidad también importa.
+      </p>
+      <p style="margin-top: 1rem;">
+        Nos hace felices ver llegar a nuestros vecinos, conversar un rato, recomendar algo rico o saludable, y sentir que este negocio no solo nos sostiene, sino que también aporta algo bueno al barrio.
+      </p>
+      <p style="margin-top: 1.5rem; font-weight: bold; color: 654640; text-align: center;">
+        Gracias por elegirnos. Aquí siempre serás bienvenid@ ❤️
+      </p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}  

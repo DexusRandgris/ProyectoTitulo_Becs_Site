@@ -26,4 +26,5 @@ urlpatterns = [
     path('transbank', transbank.transbank_create, name='transbank'),
     path('commit_pay', views.commit_pay, name='commit_pay'),
     path('administrador/pedidos/', views.lista_pedidos, name='lista_pedidos'),
+    path('quienessomos/', views.quienesomos, name='quienesomos'),
 ]
