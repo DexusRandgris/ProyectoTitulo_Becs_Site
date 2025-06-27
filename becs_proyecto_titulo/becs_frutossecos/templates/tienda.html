@@ -10,6 +10,15 @@
     <i class="fas fa-sliders-h" style="color: #6B4F3A; font-size: 18px;"></i>
     <i class="fas fa-search" style="color: #6B4F3A; font-size: 18px;"></i>
     <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
+        <!-- Filtro de categoría -->
+    <select name="categoria" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Todas las categorías</option>
+        {% for categoria in categorias %}
+            <option value="{{ categoria.id_categoria }}" {% if request.GET.categoria == categoria.id_categoria|stringformat:"s" %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+        {% endfor %}
+    </select>
     <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
         <option value="">Defecto</option>
         <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
@@ -22,11 +31,11 @@
 <div class="productos-container">
     {% for producto in productos %}
     <div class="producto-tienda">
-        <img class="logo-producto" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}">
-
+    <img class="logo-producto" src="{{ producto.imagen.url }}" alt="{{ producto.nombre_producto }}" onclick="mostrarModal(this.src)">
         <div class="nombre-container">{{ producto.nombre_producto }}</div>
         <div class="descripcion-container">{{ producto.descripcion }}</div>
         <div class="precio-container">${{ producto.precio|intcomma }}</div>
+
 
         <form method="POST" action="{% url 'agregar_al_carrito' producto.id_producto %}">
             {% csrf_token %}
@@ -40,7 +49,37 @@
     </div>
     {% endfor %}
 </div>
-
+<!-- Controles de paginación numérica -->
+<div style="text-align:center; margin: 30px 0;">
+  <div style="display:inline-block; background:#b98c6a; border-radius:6px; padding:8px 24px;">
+    {% if page_obj.has_previous %}
+      <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.previous_page_number }}" style="color:#fff; margin:0 8px; text-decoration:none;">&#8592;</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span style="background:#6B4F3A; color:#fff; padding:2px 8px; border-radius:4px; font-weight:bold; margin:0 4px;">{{ num }}</span>
+      {% elif num <= 2 %}
+        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num > page_obj.paginator.num_pages|add:"-2" %}
+        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num >= page_obj.number|add:"-1" and num <= page_obj.number|add:"1" %}
+        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == 3 and page_obj.number > 4 %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% elif num == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.next_page_number }}" style="color:#fff; margin:0 8px; text-decoration:none;">&#8594;</a>
+    {% endif %}
+  </div>
+</div>
+<!-- Modal para mostrar imagen completa -->
+<div id="modal-img" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+  <span id="cerrar-modal" style="position:absolute; top:30px; right:50px; color:#fff; font-size:2.5rem; cursor:pointer;">&times;</span>
+  <img id="img-modal-grande" src="" alt="Imagen producto" style="max-width:90vw; max-height:80vh; border-radius:16px; box-shadow:0 4px 32px #000a;">
+</div>
 <!-- Mensaje de éxito/error -->
 <div id="mensaje-carrito" style="display:none; position:fixed; top:60px; right:20px; background:#6B4F3A; color:#fff; padding:12px 24px; border-radius:8px; z-index:1000;"></div>
 
@@ -82,6 +121,18 @@ document.addEventListener('DOMContentLoaded', function() {
         mensaje.style.display = 'block';
         setTimeout(() => mensaje.style.display = 'none', 2000);
     }
+    
 });
+function mostrarModal(src) {
+  document.getElementById('img-modal-grande').src = src;
+  document.getElementById('modal-img').style.display = 'flex';
+}
+document.getElementById('cerrar-modal').onclick = function() {
+  document.getElementById('modal-img').style.display = 'none';
+};
+document.getElementById('modal-img').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
 </script>
+
 {% endblock %}

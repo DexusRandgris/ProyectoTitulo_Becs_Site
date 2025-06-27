@@ -22,12 +22,16 @@
 }
 
 .logo-producto {
-  width: 100%;
-  max-width: 180px;   /* Ajusta este valor según el tamaño deseado */
-  height: 140px;      /* Altura fija para uniformidad */
-  object-fit: contain; /* O usa 'cover' si quieres recortar la imagen */
-  margin-bottom: 1rem;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  border: 2px solid #e7ae78;
+  background: #fff8f2;
+  box-shadow: 0 2px 8px #0001;
   display: block;
+  margin: 0 auto 1rem auto;
 }
 
 .producto-tienda p {

@@ -20,8 +20,14 @@
       <a href="{% url 'lista_pedidos' %}" class="boton" style="text-decoration: none;">
         <i class="bi bi-box-seam"></i> Listado de pedidos
       </a>
-    </div>
+  <button class="boton" id="btn-agregar-categoria">
+      <i class="bi bi-plus-circle"></i> Agregar categoría
+    </button>
+    <button class="boton" id="btn-listar-categoria">
+      <i class="bi bi-pencil-square"></i> Categorías
+    </button>
   </div>
+</div>
 
 <!-- Formulario oculto para agregar producto -->
 <div id="form-agregar-producto" style="display:none; margin: 20px auto; max-width: 400px; border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9;">
@@ -29,7 +35,9 @@
   <form method="post" action="/agregar_producto/" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="nombre_producto">Nombre:</label><br>
-    <input type="text" id="nombre_producto" name="nombre_producto" required><br><br>
+    <input type="text" id="nombre_producto" name="nombre_producto" maxlength="30" required>
+    <span id="nombre-error" style="color:red; display:none;">El nombre no puede tener más de 30 caracteres.</span>
+    <br><br>
     <label for="descripcion">Descripción:</label><br>
     <textarea id="descripcion" name="descripcion" rows="3" required></textarea><br><br>
     <label for="precio">Precio:</label><br>
@@ -49,10 +57,64 @@
     <button type="button" class="boton" onclick="document.getElementById('form-agregar-producto').style.display='none'">Cancelar</button>
   </form>
 </div>
+<!-- Formulario para agregar categoría -->
+<div id="form-agregar-categoria" style="display:none; max-width: 600px; margin: 30px auto 0 auto; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; padding:24px;">
+  <h3 style="text-align:center; color:#6D452B;">Agregar nueva categoría</h3>
+  <form method="post" action="{% url 'agregar_categoria' %}">
+    {% csrf_token %}
+    <label for="nombre_categoria">Nombre:</label><br>
+    <input type="text" id="nombre_categoria" name="nombre" required><br><br>
+    <button type="submit" class="boton">Guardar</button>
+    <button type="button" class="boton" onclick="document.getElementById('form-agregar-categoria').style.display='none'">Cancelar</button>
+  </form>
+</div>
 
+<!-- Lista de categorías para modificar/eliminar -->
+<div id="lista-categorias" style="display:none; max-width: 600px; margin: 30px auto 0 auto; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; padding:24px;">
+  <h3 style="text-align:center; color:#6D452B;">Modificar/Eliminar categorías</h3>
+  <ul style="list-style:none; padding:0;">
+    {% for categoria in categorias %}
+      <li style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <form method="post" action="{% url 'modificar_categoria' categoria.id_categoria %}" style="display:flex; align-items:center; gap:8px;">
+          {% csrf_token %}
+          <input type="text" name="nombre" value="{{ categoria.nombre }}" required style="width:150px;">
+          <button type="submit" class="boton">Modificar</button>
+        </form>
+        <form method="post" action="{% url 'eliminar_categoria' categoria.id_categoria %}" style="display:flex; align-items:center;">
+          {% csrf_token %}
+          <button type="submit" class="boton" style="background:#e57373; color:#fff;">Eliminar</button>
+        </form>
+      </li>
+    {% empty %}
+      <li style="text-align:center; color:#b97a56;">No hay categorías.</li>
+    {% endfor %}
+  </ul>
+  <div style="text-align:center;">
+    <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-categorias').style.display='none'">Cerrar</button>
+  </div>
+</div>
 <!-- Lista de productos para eliminar (oculta por defecto) -->
 <div id="lista-eliminar-productos" style="display:none; max-width: 600px; margin: 30px auto 0 auto;">
   <h3 style="text-align:center; color:#6D452B;">Eliminar productos</h3>
+  <form method="get" id="filtros-eliminar-productos" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; justify-content: center;">
+    <input type="hidden" name="view" value="eliminar">
+  <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
+  <select name="categoria" style="border-radius: 8px; border: none; padding: 6px 10px;">
+      <option value="">Todas las categorías</option>
+      {% for categoria in categorias %}
+          <option value="{{ categoria.id_categoria }}" {% if request.GET.categoria == categoria.id_categoria|stringformat:"s" %}selected{% endif %}>
+              {{ categoria.nombre }}
+          </option>
+      {% endfor %}
+  </select>
+  <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
+      <option value="">Defecto</option>
+      <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
+      <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
+      <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
+  </select>
+  <button type="submit" class="boton">Buscar</button>
+</form>
   <ul style="list-style:none; padding:0;">
     {% for producto in productos %}
       <li style="display:flex; align-items:center; justify-content:space-between; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:12px; padding:10px 18px;">
@@ -73,6 +135,31 @@
       <li style="text-align:center; color:#b97a56;">No hay productos para eliminar.</li>
     {% endfor %}
   </ul>
+  <div style="text-align:center; margin: 30px 0;">
+  <div style="display:inline-block; background:#b98c6a; border-radius:6px; padding:8px 24px;">
+    {% if page_obj.has_previous %}
+      <a href="?view=eliminar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.previous_page_number }}#lista-eliminar-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8592;</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span style="background:#6B4F3A; color:#fff; padding:2px 8px; border-radius:4px; font-weight:bold; margin:0 4px;">{{ num }}</span>
+      {% elif num <= 2 %}
+        <a href="?view=eliminar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-eliminar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num > page_obj.paginator.num_pages|add:"-2" %}
+        <a href="?view=eliminar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-eliminar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == page_obj.number|add:"-1" or num == page_obj.number|add:"1" %}
+        <a href="?view=eliminar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-eliminar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == 3 and page_obj.number > 4 %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% elif num == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?view=eliminar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.next_page_number }}#lista-eliminar-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8594;</a>
+    {% endif %}
+  </div>
+  </div>
   <div style="text-align:center;">
     <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-eliminar-productos').style.display='none'">Cerrar</button>
   </div>
@@ -81,6 +168,25 @@
 <!-- Lista de todos los productos (oculta por defecto) -->
 <div id="lista-todos-productos" style="display:none; max-width: 800px; margin: 30px auto 0 auto;">
   <h3 style="text-align:center; color:#6D452B;">Lista de productos</h3>
+  <form method="get" id="filtros-lista-todos-productos" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; justify-content: center;">
+    <input type="hidden" name="view" value="listar">
+    <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
+    <select name="categoria" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Todas las categorías</option>
+        {% for categoria in categorias %}
+            <option value="{{ categoria.id_categoria }}" {% if request.GET.categoria == categoria.id_categoria|stringformat:"s" %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+    <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Defecto</option>
+        <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
+        <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
+        <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
+    </select>
+    <button type="submit" class="boton">Buscar</button>
+</form>
   <ul style="list-style:none; padding:0;">
     {% for producto in productos %}
       <li style="display:flex; align-items:center; gap:18px; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:14px; padding:12px 20px;">
@@ -97,6 +203,31 @@
       <li style="text-align:center; color:#b97a56;">No hay productos registrados.</li>
     {% endfor %}
   </ul>
+ <div style="text-align:center; margin: 30px 0;">
+  <div style="display:inline-block; background:#b98c6a; border-radius:6px; padding:8px 24px;">
+    {% if page_obj.has_previous %}
+      <a href="?view=listar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.previous_page_number }}#lista-todos-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8592;</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span style="background:#6B4F3A; color:#fff; padding:2px 8px; border-radius:4px; font-weight:bold; margin:0 4px;">{{ num }}</span>
+      {% elif num <= 2 %}
+        <a href="?view=listar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-todos-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num > page_obj.paginator.num_pages|add:"-2" %}
+        <a href="?view=listar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-todos-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == page_obj.number|add:"-1" or num == page_obj.number|add:"1" %}
+        <a href="?view=listar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-todos-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == 3 and page_obj.number > 4 %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% elif num == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?view=listar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.next_page_number }}#lista-todos-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8594;</a>
+    {% endif %}
+  </div>
+</div>
   <div style="text-align:center;">
     <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-todos-productos').style.display='none'">Cerrar</button>
   </div>
@@ -105,6 +236,25 @@
 <!-- Lista de productos para modificar (oculta por defecto) -->
 <div id="lista-modificar-productos" style="display:none; max-width: 800px; margin: 30px auto 0 auto;">
   <h3 style="text-align:center; color:#6D452B;">Modificar productos</h3>
+  <form method="get" id="filtros-modificar-productos" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; justify-content: center;">
+    <input type="hidden" name="view" value="modificar">
+    <input type="text" name="q" placeholder="Busca un producto ..." value="{{ request.GET.q }}" style="border-radius: 20px; border: none; padding: 6px 16px; width: 220px;">
+    <select name="categoria" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Todas las categorías</option>
+        {% for categoria in categorias %}
+            <option value="{{ categoria.id_categoria }}" {% if request.GET.categoria == categoria.id_categoria|stringformat:"s" %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+    <select name="orden" style="border-radius: 8px; border: none; padding: 6px 10px;">
+        <option value="">Defecto</option>
+        <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Precio, mayor a menor</option>
+        <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Precio, menor a mayor</option>
+        <option value="nombre_asc" {% if request.GET.orden == "nombre_asc" %}selected{% endif %}>Alfabético A-Z</option>
+    </select>
+    <button type="submit" class="boton">Buscar</button>
+</form>
   <ul style="list-style:none; padding:0;">
     {% for producto in productos %}
       <li style="display:flex; align-items:center; gap:18px; background:#fff8f2; border:1.5px solid #e7ae78; border-radius:8px; margin-bottom:14px; padding:12px 20px;">
@@ -122,11 +272,32 @@
       <li style="text-align:center; color:#b97a56;">No hay productos para modificar.</li>
     {% endfor %}
   </ul>
-  <div style="text-align:center;">
-    <button class="boton" style="background:#e7ae78; color:#6D452B; margin-top:10px;" onclick="document.getElementById('lista-modificar-productos').style.display='none'">Cerrar</button>
+ <!-- Controles de paginación numérica -->
+<div style="text-align:center; margin: 30px 0;">
+  <div style="display:inline-block; background:#b98c6a; border-radius:6px; padding:8px 24px;">
+    {% if page_obj.has_previous %}
+      <a href="?view=modificar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.previous_page_number }}#lista-modificar-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8592;</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span style="background:#6B4F3A; color:#fff; padding:2px 8px; border-radius:4px; font-weight:bold; margin:0 4px;">{{ num }}</span>
+      {% elif num <= 2 %}
+        <a href="?view=modificar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-modificar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num > page_obj.paginator.num_pages|add:"-2" %}
+        <a href="?view=modificar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-modificar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == page_obj.number|add:"-1" or num == page_obj.number|add:"1" %}
+        <a href="?view=modificar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ num }}#lista-modificar-productos" style="color:#fff; margin:0 4px; text-decoration:none; font-weight:bold;">{{ num }}</a>
+      {% elif num == 3 and page_obj.number > 4 %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% elif num == page_obj.paginator.num_pages|add:"-2" and page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+        <span style="color:#fff; margin:0 4px;">-</span>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?view=modificar&{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.categoria %}categoria={{ request.GET.categoria }}&{% endif %}{% if request.GET.orden %}orden={{ request.GET.orden }}&{% endif %}page={{ page_obj.next_page_number }}#lista-modificar-productos" style="color:#fff; margin:0 8px; text-decoration:none;">&#8594;</a>
+    {% endif %}
   </div>
 </div>
-
 <!-- Modal para editar producto -->
 <div id="modal-editar-producto">
   <div class="modal-content">
@@ -170,31 +341,54 @@
 </div>
 
 <script>
-  document.getElementById('btn-agregar').onclick = function() {
-    document.getElementById('form-agregar-producto').style.display = 'block';
-    document.getElementById('lista-eliminar-productos').style.display = 'none';
-    document.getElementById('lista-todos-productos').style.display = 'none';
-    document.getElementById('lista-modificar-productos').style.display = 'none';
-  };
-  document.getElementById('btn-eliminar').onclick = function() {
-    document.getElementById('lista-eliminar-productos').style.display = 'block';
-    document.getElementById('form-agregar-producto').style.display = 'none';
-    document.getElementById('lista-todos-productos').style.display = 'none';
-    document.getElementById('lista-modificar-productos').style.display = 'none';
-  };
-  document.getElementById('btn-lista').onclick = function() {
-    document.getElementById('lista-todos-productos').style.display = 'block';
-    document.getElementById('form-agregar-producto').style.display = 'none';
-    document.getElementById('lista-eliminar-productos').style.display = 'none';
-    document.getElementById('lista-modificar-productos').style.display = 'none';
-  };
-  document.getElementById('btn-modificar').onclick = function() {
-    document.getElementById('lista-modificar-productos').style.display = 'block';
-    document.getElementById('form-agregar-producto').style.display = 'none';
-    document.getElementById('lista-eliminar-productos').style.display = 'none';
-    document.getElementById('lista-todos-productos').style.display = 'none';
-  };
-
+document.getElementById('btn-agregar').onclick = function() {
+  document.getElementById('form-agregar-producto').style.display = 'block';
+  document.getElementById('lista-eliminar-productos').style.display = 'none';
+  document.getElementById('lista-todos-productos').style.display = 'none';
+  document.getElementById('lista-modificar-productos').style.display = 'none';
+  document.getElementById('form-agregar-categoria').style.display = 'none';
+  document.getElementById('lista-categorias').style.display = 'none';
+};
+document.getElementById('btn-eliminar').onclick = function() {
+  document.getElementById('lista-eliminar-productos').style.display = 'block';
+  document.getElementById('form-agregar-producto').style.display = 'none';
+  document.getElementById('lista-todos-productos').style.display = 'none';
+  document.getElementById('lista-modificar-productos').style.display = 'none';
+  document.getElementById('form-agregar-categoria').style.display = 'none';
+  document.getElementById('lista-categorias').style.display = 'none';
+};
+document.getElementById('btn-lista').onclick = function() {
+  document.getElementById('lista-todos-productos').style.display = 'block';
+  document.getElementById('form-agregar-producto').style.display = 'none';
+  document.getElementById('lista-eliminar-productos').style.display = 'none';
+  document.getElementById('lista-modificar-productos').style.display = 'none';
+  document.getElementById('form-agregar-categoria').style.display = 'none';
+  document.getElementById('lista-categorias').style.display = 'none';
+};
+document.getElementById('btn-modificar').onclick = function() {
+  document.getElementById('lista-modificar-productos').style.display = 'block';
+  document.getElementById('form-agregar-producto').style.display = 'none';
+  document.getElementById('lista-eliminar-productos').style.display = 'none';
+  document.getElementById('lista-todos-productos').style.display = 'none';
+  document.getElementById('form-agregar-categoria').style.display = 'none';
+  document.getElementById('lista-categorias').style.display = 'none';
+};
+document.getElementById('btn-agregar-categoria').onclick = function() {
+  document.getElementById('form-agregar-categoria').style.display = 'block';
+  document.getElementById('lista-categorias').style.display = 'none';
+  document.getElementById('form-agregar-producto').style.display = 'none';
+  document.getElementById('lista-eliminar-productos').style.display = 'none';
+  document.getElementById('lista-todos-productos').style.display = 'none';
+  document.getElementById('lista-modificar-productos').style.display = 'none';
+};
+document.getElementById('btn-listar-categoria').onclick = function() {
+  document.getElementById('lista-categorias').style.display = 'block';
+  document.getElementById('form-agregar-categoria').style.display = 'none';
+  document.getElementById('form-agregar-producto').style.display = 'none';
+  document.getElementById('lista-eliminar-productos').style.display = 'none';
+  document.getElementById('lista-todos-productos').style.display = 'none';
+  document.getElementById('lista-modificar-productos').style.display = 'none';
+};
   // Abrir modal y rellenar datos al hacer clic en lápiz
   document.querySelectorAll('.editar-producto').forEach(function(btn) {
     btn.onclick = function() {
@@ -218,6 +412,59 @@
       document.getElementById('form-editar-producto').action = '/modificar-producto/' + btn.getAttribute('data-id') + '/';
     };
   });
+  
+  // Mostrar automáticamente el menú de modificar productos si hay filtros activos
+  window.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    if (
+      params.get('q') ||
+      params.get('categoria') ||
+      params.get('orden')
+    ) {
+      document.getElementById('lista-modificar-productos').style.display = 'block';
+      document.getElementById('form-agregar-producto').style.display = 'none';
+      document.getElementById('lista-eliminar-productos').style.display = 'none';
+      document.getElementById('lista-todos-productos').style.display = 'none';
+    }
+  });
+  document.getElementById('nombre_producto').addEventListener('input', function() {
+  const errorSpan = document.getElementById('nombre-error');
+  if (this.value.length > 30) {
+    errorSpan.style.display = 'inline';
+  } else {
+    errorSpan.style.display = 'none';
+  }
+  });
+  // Validación al enviar el formulario
+document.querySelector('#form-agregar-producto form').addEventListener('submit', function(e) {
+  const nombre = document.getElementById('nombre_producto').value;
+  if (nombre.length > 30) {
+    document.getElementById('nombre-error').style.display = 'inline';
+    e.preventDefault();
+  }
+  });
+  window.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get('view');
+  if (view === 'eliminar') {
+    document.getElementById('lista-eliminar-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-todos-productos').style.display = 'none';
+    document.getElementById('lista-modificar-productos').style.display = 'none';
+  }
+  if (view === 'modificar') {
+    document.getElementById('lista-modificar-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-eliminar-productos').style.display = 'none';
+    document.getElementById('lista-todos-productos').style.display = 'none';
+  }
+  if (view === 'listar') {
+    document.getElementById('lista-todos-productos').style.display = 'block';
+    document.getElementById('form-agregar-producto').style.display = 'none';
+    document.getElementById('lista-eliminar-productos').style.display = 'none';
+    document.getElementById('lista-modificar-productos').style.display = 'none';
+  }
+});
 </script>
 
 {% if messages %}

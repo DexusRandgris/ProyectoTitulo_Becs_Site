@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 #from .models import Producto, Boleta, detalle_boleta
+from django.views.decorators.http import require_POST
 #from .forms import ProductoForm, RegistroUserForm, CustomAuthenticationForm
 #from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 #from django.shortcuts import redirect
+from django.core.paginator import Paginator
 from django.contrib import messages
 #from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -33,8 +35,24 @@ RESET_TOKENS = {}
 
 def inicio (request):
      return render(request, 'index.html')
-def quienesomos(request):
+def quienessomos(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        email = request.POST.get('email')
+        mensaje = request.POST.get('mensaje')
+        cuerpo = f"Nombre: {nombre}\nEmail: {email}\nMensaje:\n{mensaje}"
+
+        send_mail(
+            subject='Nuevo mensaje de contacto',
+            message=cuerpo,
+            from_email='becsfrutos@gmail.com',
+            recipient_list=['becsfrutos@gmail.com'],
+            fail_silently=False,
+        )
+        messages.success(request, '¡Tu mensaje fue enviado correctamente!')
+        return redirect('quienessomos')  # <-- Este debe ser el nombre de la URL, NO el archivo html
     return render(request, 'quienessomos.html')
+
 def iniciosesion(request):
     if request.method == 'GET':
         # Si el usuario es redirigido a login, muestra un mensaje.
@@ -148,14 +166,20 @@ def disminuir_cantidad(request, producto_id):
 
 def tiendabecs(request):
     productos = Producto.objects.all()
+    categorias = Categoria.objects.all()  # <-- importante
 
-    #obtener parámetros GET
+    # Obtener parámetros GET
     q = request.GET.get('q', '')
     orden = request.GET.get('orden', '')
+    categoria_id = request.GET.get('categoria', '')
 
-    #filtro de búsqueda
+    # Filtro de búsqueda
     if q:
         productos = productos.filter(nombre_producto__icontains=q)
+    # Filtro de categoría
+    if categoria_id:
+        productos = productos.filter(id_categoria_id=categoria_id)
+    # Orden
     if orden == 'precio_desc':
         productos = productos.order_by('-precio')
     elif orden == 'precio_asc':
@@ -163,19 +187,24 @@ def tiendabecs(request):
     elif orden == 'nombre_asc':
         productos = productos.order_by(Lower('nombre_producto').asc())
 
-    #calculamos la cantidad total de unidades del carrito
+    # Paginación
+    paginator = Paginator(productos, 20)  # 20 productos por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Carrito
     carrito = request.session.get('carrito', {})
     total_unidades_carrito = sum(carrito.values())
 
     return render(request, 'tienda.html', {
-        'productos': productos,
-        'total_unidades_carrito': total_unidades_carrito
+        'productos': page_obj.object_list,
+        'page_obj': page_obj,
+        'total_unidades_carrito': total_unidades_carrito,
+        'categorias': categorias,  # <-- importante para el filtro
     })
-
 def salir(request):
     logout(request)
     return redirect('inicio')
-
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def administrador(request):
@@ -187,9 +216,37 @@ def administrador(request):
             form.save()
             mensaje = "Producto agregado correctamente."
             form = ProductoForm()  # Limpiar el formulario
+
+    # Filtros y paginación
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()
-    return render(request, 'admin.html', {'form': form, 'mensaje': mensaje, 'productos': productos, 'categorias': categorias})
+
+    q = request.GET.get('q', '')
+    orden = request.GET.get('orden', '')
+    categoria_id = request.GET.get('categoria', '')
+
+    if q:
+        productos = productos.filter(nombre_producto__icontains=q)
+    if categoria_id:
+        productos = productos.filter(id_categoria_id=categoria_id)
+    if orden == 'precio_desc':
+        productos = productos.order_by('-precio')
+    elif orden == 'precio_asc':
+        productos = productos.order_by('precio')
+    elif orden == 'nombre_asc':
+        productos = productos.order_by(Lower('nombre_producto').asc())
+
+    paginator = Paginator(productos, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'admin.html', {
+        'form': form,
+        'mensaje': mensaje,
+        'productos': page_obj.object_list,
+        'page_obj': page_obj,
+        'categorias': categorias,
+    })
 
 def eliminar_del_carrito(request, producto_id):
     carrito = request.session.get('carrito', {})
@@ -215,14 +272,15 @@ def eliminar_producto(request, producto_id):
 def modificar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id_producto=producto_id)
     if request.method == 'POST':
-        form = ProductoForm(request.POST, request.FILES, instance=producto)
-        if form.is_valid():
-            form.save()
-            return redirect('admin')
-    else:
-        form = ProductoForm(instance=producto)
-    return render(request, 'formulario_modificar_producto.html', {'form': form, 'producto': producto})
-
+        producto.nombre_producto = request.POST.get('nombre_producto')
+        producto.descripcion = request.POST.get('descripcion')
+        producto.precio = request.POST.get('precio')
+        producto.stock = request.POST.get('stock')
+        producto.id_categoria_id = request.POST.get('id_categoria')
+        if request.FILES.get('imagen'):
+            producto.imagen = request.FILES['imagen']
+        producto.save()
+    return redirect('admin')
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def agregar_producto(request):
@@ -252,6 +310,40 @@ def agregar_producto(request):
         return redirect('admin')
     else:
         return render(request, 'admin.html', {'categorias': categorias})
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+@require_POST
+def agregar_categoria(request):
+    nombre = request.POST.get('nombre')
+    if nombre:
+        Categoria.objects.create(nombre=nombre)
+        messages.success(request, 'Categoría agregada correctamente.')
+    else:
+        messages.error(request, 'El nombre es obligatorio.')
+    return redirect('admin')
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+@require_POST
+def modificar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id_categoria=id)
+    nombre = request.POST.get('nombre')
+    if nombre:
+        categoria.nombre = nombre
+        categoria.save()
+        messages.success(request, 'Categoría modificada correctamente.')
+    else:
+        messages.error(request, 'El nombre es obligatorio.')
+    return redirect('admin')
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+@require_POST
+def eliminar_categoria(request, id):
+    categoria = get_object_or_404(Categoria, id_categoria=id)
+    categoria.delete()
+    messages.success(request, 'Categoría eliminada correctamente.')
+    return redirect('admin')
 
 def commit_pay(request):
     """
