@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/inicio_sesion_styles.css' %}">
+<main class="py-5 login-main">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card login-card shadow-sm">
+          <div class="card-header text-center" style="background-color:#DDB892;">
+            <h2 class="m-0" style="color:#6B4F3A;">¡Revisa tu correo!</h2>
+          </div>
+          <div class="card-body" style="background-color:#A17E62;">
+            <div class="alert alert-success text-center">
+              Si el correo <b>{{ email }}</b> está registrado, te hemos enviado un enlace para restablecer tu contraseña.
+            </div>
+            <div class="text-center mt-4">
+              <a href="/" class="btn btn-login">Volver al inicio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %} 

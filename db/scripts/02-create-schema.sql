@@ -255,6 +255,37 @@ INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'produc
 INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004', '123 Main St');
 INSERT INTO public.cliente VALUES(2, 'Cliente', 'Becs', 'becs.cliente@gmail.com', '1234567890', '456 Elm St');
 
+--Poblar tabla metodo_pago
+INSERT INTO public.metodo_pago VALUES(1, 'Transbank', 'Pago con tarjeta via Transbank');
+INSERT INTO public.metodo_pago VALUES(2, 'Transferencia', 'Pago por transferencia bancaria');
+
+--Poblar tabla estado_pedido
+INSERT INTO public.estado_pedido VALUES(1, 'Pagado');
+INSERT INTO public.estado_pedido VALUES(2, 'Terminado');
+
+--Poblar tabla pedido
+INSERT INTO public.pedido VALUES(1, '2021-04-16 10:00:00', 1, 1, 1, '2021-01-10 10:00:00', 'ACEPTADO', 'Tarjeta de Débito', 12000, 'ORD1001', NULL);
+INSERT INTO public.pedido VALUES(2, '2024-05-18 11:30:00', 2, 1, 2, '2025-06-27 11:30:00', 'ACEPTADO', 'Tarjeta de Crédito', 18500, 'ORD1002', NULL);
+INSERT INTO public.pedido VALUES(3, '2025-06-27 12:45:00', 1, 1, 1, '2025-03-29 12:45:00', 'ACEPTADO', 'Tarjeta de Débito', 9500, 'ORD1003', NULL);
+INSERT INTO public.pedido VALUES(4, '2025-03-15 13:20:00', 2, 1, 2, '2024-05-18 13:20:00', 'ACEPTADO', 'Tarjeta de Crédito', 21000, 'ORD1004', NULL);
+INSERT INTO public.pedido VALUES(5, '2023-04-19 14:10:00', 1, 1, 1, '2023-09-15 14:10:00', 'ACEPTADO', 'Tarjeta de Débito', 17500, 'ORD1005', NULL);
+INSERT INTO public.pedido VALUES(6, '2024-05-18 15:00:00', 2, 1, 2, '2025-04-23 15:00:00', 'ACEPTADO', 'Tarjeta de Crédito', 9900, 'ORD1006', NULL);
+
+--Poblar tabla detalle_pedido
+INSERT INTO public.detalle_pedido VALUES(1, 2, 8300, 1, 1); -- Pedido 1, 2x Aceite de coco
+INSERT INTO public.detalle_pedido VALUES(2, 1, 800, 1, 2);  -- Pedido 1, 1x Aceitunas verdes
+INSERT INTO public.detalle_pedido VALUES(3, 3, 1000, 2, 3); -- Pedido 2, 3x Aji de color
+INSERT INTO public.detalle_pedido VALUES(4, 1, 1700, 2, 5); -- Pedido 2, 1x Ajos en escamas
+INSERT INTO public.detalle_pedido VALUES(5, 2, 1500, 3, 8); -- Pedido 3, 2x Almendra entera
+INSERT INTO public.detalle_pedido VALUES(6, 1, 900, 3, 6);  -- Pedido 3, 1x Ajo en polvo
+INSERT INTO public.detalle_pedido VALUES(7, 1, 900, 4, 7);  -- Pedido 4, 1x Aliño completo
+INSERT INTO public.detalle_pedido VALUES(8, 2, 800, 4, 2);  -- Pedido 4, 2x Aceitunas verdes
+INSERT INTO public.detalle_pedido VALUES(9, 1, 8300, 5, 1); -- Pedido 5, 1x Aceite de coco
+INSERT INTO public.detalle_pedido VALUES(10, 2, 1000, 5, 3);-- Pedido 5, 2x Aji de color
+INSERT INTO public.detalle_pedido VALUES(11, 1, 1500, 6, 8);-- Pedido 6, 1x Almendra entera
+INSERT INTO public.detalle_pedido VALUES(12, 1, 900, 6, 7); -- Pedido 6, 1x Aliño completo
+-- Fin poblar tabla detalle_pedido
+
 -- AL FINAL DEL ARCHIVO, SINCRONIZACIÓN DE SECUENCIAS
 -- Esto asegura que los contadores de ID de PostgreSQL estén alineados con los datos insertados manualmente.
 

@@ -23,6 +23,13 @@ from . import transbank
 import datetime as dt
 from django.utils import timezone
 from django.db.models.functions import Lower
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.crypto import get_random_string
+from django.urls import reverse
+
+# Diccionario temporal para tokens (en producción usar modelo o caché)
+RESET_TOKENS = {}
 
 def inicio (request):
      return render(request, 'index.html')
@@ -365,18 +372,62 @@ def commit_pay(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def lista_pedidos(request):
-    pedidos = Pedido.objects.all().order_by('-fecha_pedido')
+    # Cambiar estado a 'Terminado' si se recibe un POST con el id del pedido
+    if request.method == 'POST' and 'terminar_pedido_id' in request.POST:
+        pedido_id = request.POST.get('terminar_pedido_id')
+        pedido = Pedido.objects.get(id_pedido=pedido_id)
+        estado_terminado, _ = EstadoPedido.objects.get_or_create(estado='Terminado')
+        pedido.id_estado_pedido = estado_terminado
+        pedido.save()
+    # Pedidos no terminados
+    pedidos = Pedido.objects.exclude(id_estado_pedido__estado='Terminado').order_by('-fecha_pedido')
+    # Pedidos terminados
+    pedidos_terminados = Pedido.objects.filter(id_estado_pedido__estado='Terminado').order_by('-fecha_pedido')
     dia = request.GET.get('dia')
     mes = request.GET.get('mes')
     anio = request.GET.get('anio')
-
     if dia:
         pedidos = pedidos.filter(fecha_pedido__day=dia)
     if mes:
         pedidos = pedidos.filter(fecha_pedido__month=mes)
     if anio:
         pedidos = pedidos.filter(fecha_pedido__year=anio)
+    return render(request, 'lista_pedidos.html', {'pedidos': pedidos, 'pedidos_terminados': pedidos_terminados})
 
-    return render(request, 'lista_pedidos.html', {'pedidos': pedidos})
+def solicitar_reseteo_cliente(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            cliente = Cliente.objects.get(email=email)
+            token = get_random_string(32)
+            RESET_TOKENS[token] = cliente.id_cliente
+            reset_url = request.build_absolute_uri(reverse('resetear_contraseña_cliente', args=[token]))
+            send_mail(
+                'Recupera tu contraseña',
+                f'Para restablecer tu contraseña haz clic en el siguiente enlace: {reset_url}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+            return render(request, 'solicitar_reseteo_exito.html', {'email': email})
+        except Cliente.DoesNotExist:
+            return render(request, 'solicitar_reseteo_cliente.html', {'error': 'No existe un cliente con ese correo.'})
+    return render(request, 'solicitar_reseteo_cliente.html')
+
+def resetear_contraseña_cliente(request, token):
+    cliente_id = RESET_TOKENS.get(token)
+    if not cliente_id:
+        return render(request, 'resetear_contraseña_cliente.html', {'error': 'Token inválido o expirado.'})
+    if request.method == 'POST':
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            return render(request, 'resetear_contraseña_cliente.html', {'error': 'Las contraseñas no coinciden.', 'token': token})
+        cliente = Cliente.objects.get(id_cliente=cliente_id)
+        cliente.contraseña = password1
+        cliente.save()
+        del RESET_TOKENS[token]
+        return render(request, 'resetear_contraseña_exito.html')
+    return render(request, 'resetear_contraseña_cliente.html', {'token': token})
 
           

@@ -58,6 +58,7 @@
   .btn-login:hover,
   .btn-register:hover {
     background-color: #563a2a;
+    color: #fff;
   }
   
   /* ==== AJUSTES DE MÁRGENES ==== */

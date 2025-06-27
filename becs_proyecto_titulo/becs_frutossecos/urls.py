@@ -27,5 +27,7 @@ urlpatterns = [
     path('commit_pay', views.commit_pay, name='commit_pay'),
     path('administrador/pedidos/', views.lista_pedidos, name='lista_pedidos'),
     path('quienessomos/', views.quienesomos, name='quienesomos'),
+    path('solicitar-reseteo-cliente/', views.solicitar_reseteo_cliente, name='solicitar_reseteo_cliente'),
+    path('resetear-contraseña-cliente/<str:token>/', views.resetear_contraseña_cliente, name='resetear_contraseña_cliente'),
 
 ]

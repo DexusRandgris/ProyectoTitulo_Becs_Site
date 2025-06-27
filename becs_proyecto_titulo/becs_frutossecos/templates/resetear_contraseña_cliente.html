@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/inicio_sesion_styles.css' %}">
+<main class="py-5 login-main">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card login-card shadow-sm">
+          <div class="card-header text-center" style="background-color:#DDB892;">
+            <h2 class="m-0" style="color:#6B4F3A;">Restablecer contraseña</h2>
+          </div>
+          <div class="card-body" style="background-color:#A17E62;">
+            {% if error %}
+              <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
+                  <input type="password" class="form-control" id="password1" name="password1" required placeholder="Nueva contraseña">
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
+                  <input type="password" class="form-control" id="password2" name="password2" required placeholder="Repite la contraseña">
+                </div>
+              </div>
+              <input type="hidden" name="token" value="{{ token }}">
+              <button type="submit" class="btn btn-login w-100">Restablecer contraseña</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %} 
