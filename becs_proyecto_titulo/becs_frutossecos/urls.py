@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 from . import transbank
-
+from django.contrib.auth import views as auth_views
 urlpatterns = [
 
     path('login/',      views.iniciosesion,  name='iniciosesion'),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('commit_pay', views.commit_pay, name='commit_pay'),
     path('administrador/pedidos/', views.lista_pedidos, name='lista_pedidos'),
     path('quienessomos/', views.quienesomos, name='quienesomos'),
+
 ]
