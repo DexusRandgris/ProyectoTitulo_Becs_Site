@@ -119,19 +119,23 @@
     box-sizing: border-box;
     width: 100vw;
     max-width: 100vw;
-    overflow-x: auto;
-    position: relative;
-    z-index: 10;
+    overflow-y: hidden !important;
+    overflow-x: unset !important;
   }
   .logo {
     margin: 0 4px 0 0;
     align-items: center;
     gap: 0.1rem;
+    padding: 0;
   }
   .logo img {
-    height: 32px;
-    width: 32px;
-    margin-right: 2px;
+    height: 100px !important;
+    max-height: 100px !important;
+    width: auto;
+    border-radius: 10px;
+    margin: 0;
+    display: block;
+    object-fit: contain;
   }
   .logo h3 {
     display: none;
@@ -180,10 +184,17 @@
     padding: 8px 2px;
     min-height: 48px;
     margin-bottom: 6px;
+    overflow-y: hidden !important;
+    overflow-x: unset !important;
   }
   .logo img {
-    height: 26px;
-    width: 26px;
+    height: 28px !important;
+    max-height: 28px !important;
+    width: auto;
+    border-radius: 8px;
+    margin: 0;
+    display: block;
+    object-fit: contain;
   }
   .header .nav-links button {
     font-size: 0.95em;

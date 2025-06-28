@@ -505,6 +505,11 @@ html, body {
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0.2rem;
+    justify-items: center;
+  }
+  .instagram-posts blockquote.instagram-media {
+    max-width: 320px !important;
+    margin: 0 auto !important;
   }
 }
 @media (max-width: 600px) {

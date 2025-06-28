@@ -301,7 +301,6 @@
 <!-- Modal para editar producto -->
 <div id="modal-editar-producto">
   <div class="modal-content">
-    <button class="close-modal" onclick="document.getElementById('modal-editar-producto').style.display='none'">&times;</button>
     <h3>Editar producto</h3>
     <form id="form-editar-producto" method="post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -337,10 +336,36 @@
       <input type="file" id="edit-imagen" name="imagen" accept="image/*">
       <button type="submit" class="boton">Guardar cambios</button>
     </form>
+    <div style="text-align:center; margin-top:18px;">
+      <button class="boton" style="background:#e7ae78; color:#6D452B;" onclick="document.getElementById('modal-editar-producto').style.display='none'">Cerrar</button>
+    </div>
   </div>
 </div>
 
 <script>
+function scrollToFirstProductImage(listId) {
+  setTimeout(function() {
+    const list = document.getElementById(listId);
+    if (list) {
+      const img = list.querySelector('img');
+      if (img) {
+        const y = img.getBoundingClientRect().top + window.scrollY - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        return;
+      }
+    }
+    // Si no hay imagen, scroll al contenedor
+    scrollToElement(listId);
+  }, 100); // Espera a que se muestre la lista
+}
+
+function scrollToElement(elementId) {
+  const el = document.getElementById(elementId);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
 document.getElementById('btn-agregar').onclick = function() {
   document.getElementById('form-agregar-producto').style.display = 'block';
   document.getElementById('lista-eliminar-productos').style.display = 'none';
@@ -348,6 +373,7 @@ document.getElementById('btn-agregar').onclick = function() {
   document.getElementById('lista-modificar-productos').style.display = 'none';
   document.getElementById('form-agregar-categoria').style.display = 'none';
   document.getElementById('lista-categorias').style.display = 'none';
+  scrollToElement('form-agregar-producto');
 };
 document.getElementById('btn-eliminar').onclick = function() {
   document.getElementById('lista-eliminar-productos').style.display = 'block';
@@ -356,6 +382,7 @@ document.getElementById('btn-eliminar').onclick = function() {
   document.getElementById('lista-modificar-productos').style.display = 'none';
   document.getElementById('form-agregar-categoria').style.display = 'none';
   document.getElementById('lista-categorias').style.display = 'none';
+  scrollToFirstProductImage('lista-eliminar-productos');
 };
 document.getElementById('btn-lista').onclick = function() {
   document.getElementById('lista-todos-productos').style.display = 'block';
@@ -364,6 +391,7 @@ document.getElementById('btn-lista').onclick = function() {
   document.getElementById('lista-modificar-productos').style.display = 'none';
   document.getElementById('form-agregar-categoria').style.display = 'none';
   document.getElementById('lista-categorias').style.display = 'none';
+  scrollToFirstProductImage('lista-todos-productos');
 };
 document.getElementById('btn-modificar').onclick = function() {
   document.getElementById('lista-modificar-productos').style.display = 'block';
@@ -372,6 +400,7 @@ document.getElementById('btn-modificar').onclick = function() {
   document.getElementById('lista-todos-productos').style.display = 'none';
   document.getElementById('form-agregar-categoria').style.display = 'none';
   document.getElementById('lista-categorias').style.display = 'none';
+  scrollToFirstProductImage('lista-modificar-productos');
 };
 document.getElementById('btn-agregar-categoria').onclick = function() {
   document.getElementById('form-agregar-categoria').style.display = 'block';
@@ -380,6 +409,7 @@ document.getElementById('btn-agregar-categoria').onclick = function() {
   document.getElementById('lista-eliminar-productos').style.display = 'none';
   document.getElementById('lista-todos-productos').style.display = 'none';
   document.getElementById('lista-modificar-productos').style.display = 'none';
+  scrollToElement('form-agregar-categoria');
 };
 document.getElementById('btn-listar-categoria').onclick = function() {
   document.getElementById('lista-categorias').style.display = 'block';
@@ -388,6 +418,7 @@ document.getElementById('btn-listar-categoria').onclick = function() {
   document.getElementById('lista-eliminar-productos').style.display = 'none';
   document.getElementById('lista-todos-productos').style.display = 'none';
   document.getElementById('lista-modificar-productos').style.display = 'none';
+  scrollToElement('lista-categorias');
 };
   // Abrir modal y rellenar datos al hacer clic en lápiz
   document.querySelectorAll('.editar-producto').forEach(function(btn) {
