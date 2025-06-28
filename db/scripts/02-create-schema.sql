@@ -239,17 +239,142 @@ INSERT INTO public.categoria VALUES(3, 'Aji', 'Aji');
 INSERT INTO public.categoria VALUES(4, 'Ajos', 'Ajos');
 INSERT INTO public.categoria VALUES(5, 'Aliño', 'Aliño');
 INSERT INTO public.categoria VALUES(6, 'Almendras', 'Almendras');
+INSERT INTO public.categoria VALUES(7, 'Avellanas', 'Avellanas');
+INSERT INTO public.categoria VALUES(8, 'Dátiles', 'Dátiles');
+INSERT INTO public.categoria VALUES(9, 'Higos', 'Higos');
+INSERT INTO public.categoria VALUES(10, 'Nueces', 'Nueces');
+INSERT INTO public.categoria VALUES(11, 'Maní', 'Maní');
+INSERT INTO public.categoria VALUES(12, 'Granola', 'Granola');
+INSERT INTO public.categoria VALUES(13, 'Sales', 'Sales');
+INSERT INTO public.categoria VALUES(14, 'Frutas deshidratadas', 'Frutas deshidratadas');
+INSERT INTO public.categoria VALUES(15, 'Chocolate', 'Chocolate');
+INSERT INTO public.categoria VALUES(16, 'Especias', 'Especias');
+INSERT INTO public.categoria VALUES(17, 'Quinoa', 'Quinoa');
+INSERT INTO public.categoria VALUES(18, 'Semillas', 'Semillas');
+INSERT INTO public.categoria VALUES(19, 'Pistachos', 'Pistachos');
+INSERT INTO public.categoria VALUES(20, 'Pasas', 'Pasas');
+INSERT INTO public.categoria VALUES(21, 'Cereales', 'Cereales');
+INSERT INTO public.categoria VALUES(22, 'Harinas', 'Harinas');
+INSERT INTO public.categoria VALUES(23, 'Miel', 'Miel');
+INSERT INTO public.categoria VALUES(24, 'Tés', 'Tés');
+INSERT INTO public.categoria VALUES(25, 'Condimentos', 'Condimentos');
+INSERT INTO public.categoria VALUES(26, 'Alfajor', 'Alfajor');
 
 
 --Poblar tabla producto
+-- ACEITES (Categoría 1)
 INSERT INTO public.producto VALUES(1,'Aceite de coco','500ml',8300,100,'productos/aceitedecoco.png',1);
+
+-- ACEITUNAS (Categoría 2)
 INSERT INTO public.producto VALUES(2,'Aceitunas verdes','100grs',800,100,'productos/aceitunasverdes.png',2);
+
+-- AJÍ (Categoría 3)
 INSERT INTO public.producto VALUES(3,'Aji de color','100grs',1000,100,'productos/ajidecolor.png',3);
 INSERT INTO public.producto VALUES(4,'Aji Pimienta cayena','100grs',1600,100,'productos/ajipimienta.png',3);
+
+-- AJOS (Categoría 4)
 INSERT INTO public.producto VALUES(5,'Ajos en escamas','100grs',1700,100,'productos/ajoenescamas.png',4);
 INSERT INTO public.producto VALUES(6,'Ajo en polvo','100grs',900,100,'productos/ajoenpolvo.png',4);
+
+-- ALIÑOS (Categoría 5)
 INSERT INTO public.producto VALUES(7,'Aliño completo','100grs',900,100,'productos/aliñocompleto.png',5);
+
+-- ALMENDRAS (Categoría 6)
 INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'productos/almendraentera.png',6);
+
+
+-- AVELLANAS (Categoría 7)
+INSERT INTO public.producto VALUES(9,'Avellanas Europeas con Choc','100grs',2200,100,'Avellana_con_chocolate.jpg',7);
+INSERT INTO public.producto VALUES(10,'Avellanas Europeas Tostadas','100grs',2400,100,'productos/Avellana_tostada_europea.jpg',7);
+
+-- DÁTILES (Categoría 8)
+INSERT INTO public.producto VALUES(11,'Dátiles','100grs',750,100,'productos/Datiles.jpg',8);
+
+-- HIGOS (Categoría 9)
+INSERT INTO public.producto VALUES(12,'Higos Deshidratados','100grs',950,100,'productos/Higos_deshidratados.jpg',9);
+
+-- NUECES (Categoría 10)
+INSERT INTO public.producto VALUES(13,'Nuez Mariposa Chandler','100grs',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',10);
+INSERT INTO public.producto VALUES(14,'Nuez moscada en polvo','50grs',1400,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',10);
+INSERT INTO public.producto VALUES(15,'Nuez moscada entera','C/U',350,100,'productos/nuez_moscada_entera.jpg',10);
+
+-- MANÍ (Categoría 11)
+INSERT INTO public.producto VALUES(16,'Maní Choc de colores','100grs',750,100,'productos/mani_choc_de_colores_2.jpg',11);
+INSERT INTO public.producto VALUES(17,'Maní Confitado coco miel','100grs',600,100,'productos/Mani_coco_miel2.jpg',11);
+INSERT INTO public.producto VALUES(18,'Maní Confitado frutilla','100grs',600,100,'productos/Mani_frutilla_2.jpg',11);
+INSERT INTO public.producto VALUES(19,'Maní Confitado Menta','100grs',600,100,'productos/mani_menta_2.jpg',11);
+INSERT INTO public.producto VALUES(20,'Maní Confitado Mora','100grs',600,100,'productos/mani_mora_crema.jpg',11);
+INSERT INTO public.producto VALUES(21,'Maní Confitado Naranja','100grs',600,100,'productos/Mani_Naranja.jpg',11);
+INSERT INTO public.producto VALUES(22,'Maní Confitado Pisco Sour','100grs',600,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',11);
+INSERT INTO public.producto VALUES(23,'Maní Confitado Pistacho','100grs',600,100,'productos/mani_choc_de_colores_2.jpg',11);
+INSERT INTO public.producto VALUES(24,'Maní Confitado Platano','100grs',600,100,'productos/mani_choc_de_colores_2.jpg',11);
+INSERT INTO public.producto VALUES(25,'Maní Japones','100grs',950,100,'productos/Mani_japones_2.jpg',11);
+INSERT INTO public.producto VALUES(26,'Maní Japones Merken','100grs',950,100,'productos/Mani_Japones_merken_2.jpg',11);
+INSERT INTO public.producto VALUES(27,'Maní Salado Merkén','100grs',700,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',11);
+INSERT INTO public.producto VALUES(28,'Maní Salado Tostado','100grs',700,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',11);
+INSERT INTO public.producto VALUES(29,'Mani sin sal','100grs',750,100,'productos/Mani_sin_sal.jpg',11);
+INSERT INTO public.producto VALUES(30,'Mani Confitado tres leches','100grs',750,100,'productos/Mani_tres_leches.jpg',11);
+
+-- GRANOLA (Categoría 12)
+INSERT INTO public.producto VALUES(31,'Granola','100grs',600,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',12);
+INSERT INTO public.producto VALUES(32,'Granola miel','100grs',600,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',12);
+
+-- SALES (Categoría 13)
+INSERT INTO public.producto VALUES(33,'Sal rosada','100grs',460,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',13);
+INSERT INTO public.producto VALUES(34,'Sal rosada fina','100grs',460,100,'productos/Sal_rosada_fina.jpg',13);
+
+
+-- CHOCOLATE (Categoría 15)
+INSERT INTO public.producto VALUES(35,'Monedas de chocolate','100grs',1000,100,'productos/Chips_de_chocolate_2.jpg',15);
+
+-- QUINOA (Categoría 17)
+INSERT INTO public.producto VALUES(36,'Quinoa blanca','1/2 Kilo',3500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',17);
+INSERT INTO public.producto VALUES(37,'Quinoa Pop Dulce','100grs',900,100,'productos/Quinoa_pop_endulzada.jpg',17);
+
+-- SEMILLAS (Categoría 18)
+INSERT INTO public.producto VALUES(38,'Semillas de zapallo','100grs',950,100,'productos/Semilla_de_zapallo.jpg',18);
+INSERT INTO public.producto VALUES(39,'Semillas de amapola','100grs',950,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',18);
+
+-- PISTACHOS (Categoría 19)
+INSERT INTO public.producto VALUES(40,'Pistacho','100grs',2100,100,'productos/Pistacho.jpg',19);
+
+-- PASAS (Categoría 20)
+INSERT INTO public.producto VALUES(41,'Pasas rubias','100grs',900,100,'productos/Pasas_rubias.jpg',20);
+INSERT INTO public.producto VALUES(42,'Pasas de chocolate','100grs',800,100,'productos/Pasas_con_chocolate_2.jpg',20);
+
+-- HARINAS (Categoría 22)
+INSERT INTO public.producto VALUES(43,'Harina Blanca','1 kilo',1400,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(44,'Harina de Almendra Sin Piel','1/2 Kilo',7000,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(45,'Harina de Arroz','1 kilo',2500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(46,'Harina de Avena','1 kilo',2500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(47,'Harina de Garbanzo','1 kilo',3500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(48,'Harina de Linaza','1 kilo',4500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(49,'Harina Integral','1 kilo',1800,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(50,'Harina Pan','1 kilo',1800,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+INSERT INTO public.producto VALUES(51,'Harina tostada','1 kilo',2500,100,'productos/Harina_tostada.jpg',22);
+INSERT INTO public.producto VALUES(52,'Harina de coco','1 kilo',6000,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',22);
+
+-- MIEL (Categoría 23)
+INSERT INTO public.producto VALUES(53,'Miel de Ulmo Eucalipto','1 kilo',6000,100,'productos/Mieles.jpg',23);
+INSERT INTO public.producto VALUES(54,'Miel de Ulmo Flores Pectorales','1 kilo',6000,100,'productos/Mieles_2.jpg',23);
+INSERT INTO public.producto VALUES(55,'Miel de Ulmo Jengibre Limon','1 kilo',6000,100,'productos/Mieles.jpg',23);
+INSERT INTO public.producto VALUES(56,'Miel de Ulmo Liquido y Solido','1 kilo',5000,100,'productos/Mieles.jpg',23);
+INSERT INTO public.producto VALUES(57,'Miel de Ulmo Palto Miel','250grs',6000,100,'productos/Mieles.jpg',23);
+
+-- TÉS (Categoría 24)
+INSERT INTO public.producto VALUES(58,'Té blanco','50grs',1500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',24);
+
+-- CONDIMENTOS (Categoría 25)
+INSERT INTO public.producto VALUES(59,'Orégano','100grs',900,100,'productos/Oregano.jpg',25);
+INSERT INTO public.producto VALUES(60,'Romero','50grs',1500,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+INSERT INTO public.producto VALUES(61,'Laurel','50grs',1500,100,'productos/Laurel.jpg',25);
+INSERT INTO public.producto VALUES(62,'Perejil','50grs',350,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+
+-- ALFAJOR (Categoría 26)
+INSERT INTO public.producto VALUES(63,'Alfajor Dulce de leche','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+INSERT INTO public.producto VALUES(64,'Alfajor Dulce de leche(Srt)','2-uni',2000,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+INSERT INTO public.producto VALUES(65,'Alfajor Dulce de leche(Fram)','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+
 
 --Poblar tabla cliente
 INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004', '123 Main St');
