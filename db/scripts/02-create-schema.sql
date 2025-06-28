@@ -377,7 +377,7 @@ INSERT INTO public.producto VALUES(65,'Alfajor Dulce de leche(Fram)','C/U',1200,
 
 
 --Poblar tabla cliente
-INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', 'pato2004', '123 Main St');
+INSERT INTO public.cliente VALUES(1, 'Patricio', 'Finschi', 'patofinschi@gmail.com', '123456', '123 Main St');
 INSERT INTO public.cliente VALUES(2, 'Cliente', 'Becs', 'becs.cliente@gmail.com', '1234567890', '456 Elm St');
 
 --Poblar tabla metodo_pago
