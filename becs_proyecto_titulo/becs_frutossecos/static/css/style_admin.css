@@ -423,3 +423,31 @@
     opacity: 0;
   }
 }
+
+@media (max-width: 700px) {
+  #filtros-eliminar-productos,
+  #filtros-lista-todos-productos,
+  #filtros-modificar-productos {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.7rem !important;
+    width: 100% !important;
+    padding: 0 0.5rem !important;
+    justify-content: flex-start !important;
+  }
+  #filtros-eliminar-productos input[type="text"],
+  #filtros-eliminar-productos select,
+  #filtros-eliminar-productos button,
+  #filtros-lista-todos-productos input[type="text"],
+  #filtros-lista-todos-productos select,
+  #filtros-lista-todos-productos button,
+  #filtros-modificar-productos input[type="text"],
+  #filtros-modificar-productos select,
+  #filtros-modificar-productos button {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin: 0 !important;
+  }
+}

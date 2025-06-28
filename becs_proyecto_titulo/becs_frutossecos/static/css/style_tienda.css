@@ -85,3 +85,88 @@
   font-weight: bold;
   margin-top: 0.1rem;
 }
+@media (max-width: 900px) {
+  .productos-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 700px) {
+  .productos-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0 2px;
+  }
+  .producto-tienda {
+    width: 98%;
+    max-width: 350px;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.3rem 0.5rem 0.7rem 0.5rem;
+    margin-bottom: 0.7rem;
+    box-sizing: border-box;
+  }
+  .logo-producto {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 0.4rem;
+  }
+  .nombre-container {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  .descripcion-container {
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+  }
+  .precio-container {
+    font-size: 1.1rem;
+    margin: 0.2rem 0 0.3rem 0;
+  }
+  .btn-agregar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.32rem 0.1rem;
+    width: 100%;
+    max-width: 100%;
+    gap: 0.3em;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .btn-agregar span {
+    display: none !important;
+  }
+  .btn-agregar::after {
+    display: inline;
+    margin-left: 0.3em;
+  }
+  .btn-agregar svg,
+  .btn-agregar i {
+    font-size: 1em !important;
+    width: 1em !important;
+    height: 1em !important;
+  }
+  .buscador-filtros {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.7rem !important;
+    width: 100% !important;
+    padding: 0 0.5rem !important;
+  }
+  .buscador-filtros input[type="text"],
+  .buscador-filtros select,
+  .buscador-filtros button {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin: 0 !important;
+  }
+  .buscador-filtros i {
+    display: none !important;
+  }
+}

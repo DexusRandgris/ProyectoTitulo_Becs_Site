@@ -105,3 +105,107 @@
   .carrito-link:hover {
     color: #d8b592; 
   }
+@media (max-width: 900px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 6px;
+    min-height: 54px;
+    height: auto;
+    min-width: 0;
+    margin: 0 0 8px 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: auto;
+    position: relative;
+    z-index: 10;
+  }
+  .logo {
+    margin: 0 4px 0 0;
+    align-items: center;
+    gap: 0.1rem;
+  }
+  .logo img {
+    height: 32px;
+    width: 32px;
+    margin-right: 2px;
+  }
+  .logo h3 {
+    display: none;
+  }
+  nav {
+    width: auto;
+    margin: 0;
+  }
+  .nav-links {
+    flex-direction: row !important;
+    gap: 6px;
+    width: auto;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .nav-links li {
+    width: auto;
+    text-align: center;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+  .header .nav-links button {
+    width: auto;
+    font-size: 1em;
+    padding: 6px 8px;
+    min-width: 0;
+    border-radius: 6px;
+    margin: 0;
+  }
+  .barra-carrito {
+    width: auto;
+    margin-left: 2px;
+    padding-right: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 8px 2px;
+    min-height: 48px;
+    margin-bottom: 6px;
+  }
+  .logo img {
+    height: 26px;
+    width: 26px;
+  }
+  .header .nav-links button {
+    font-size: 0.95em;
+    padding: 4px 4px;
+  }
+}
+@media (max-width: 900px) {
+  .header {
+    overflow-x: auto;
+    position: relative;
+    z-index: 10;
+  }
+  .dropdown-menu {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 60px !important; /* Ajusta según la altura de tu header */
+    min-width: 180px;
+    z-index: 9999;
+  }
+  .nav-item.dropdown.show .dropdown-menu {
+    visibility: visible;
+    opacity: 1;
+  }
+}

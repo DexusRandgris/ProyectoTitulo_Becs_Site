@@ -81,3 +81,27 @@ main {
     font-size: 13px;
     width: 100%;
 }
+@media (max-width: 900px) {
+  .footer-section.logo img {
+    display: block;
+    margin: 0 0 16px 0 !important; 
+    width: 100px !important;
+    max-width: 60vw !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    object-fit: contain !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-section.logo img {
+    width: 70px !important;
+    max-width: 80vw !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    margin-bottom: 12px !important;
+    margin-top: 8px !important;
+    margin-left: 0 !important;
+  }
+}

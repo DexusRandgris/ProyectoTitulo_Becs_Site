@@ -424,113 +424,124 @@ html, body {
     background: #714D37;
     color: #fff;
 }
-
-
-  /* ===== Responsive general ===== */
-@media (max-width: 1200px) {
-  /* Carousel: menos alto en pantallas medianas */
-  .carousel-slide img {
-    height: 50vh;
+@media (max-width: 600px) {
+  /* Carrusel */
+  .carousel-title {
+    font-size: 1.3rem;
   }
   .carousel-overlay {
-    padding: 1rem;
-    max-width: 90%;
+    padding: 0.7rem;
+    max-width: 98vw;
   }
-  .carousel-title {
-    font-size: 2.2rem;
+  .carousel-cta {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
   }
-}
 
-@media (max-width: 992px) {
-  /* Productos: más columnas pequeñas */
-  .grid-contenedor {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  /* Productos destacados */
+  .destacados-header .grid-titulo,
+  .grid-titulo,
+  .titulo-contenedor {
+    font-size: 1.3rem;
+    padding: 0.7rem 0;
   }
-  .producto img {
-    width: 120px;
+  .destacados-header .grid-subtitulo {
+    font-size: 0.85rem;
+  }
+  .destacados-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem 0.3rem;
+    grid-auto-rows: 140px;
+  }
+  .destacado-item,
+  .destacado-item img {
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 0.9rem;
+  }
+  .destacado-more {
     height: 120px;
   }
+
+  /* Productos grid */
+  .productos-grid {
+    padding: 1rem 0.2rem;
+  }
+  .producto img {
+    width: 80px;
+    height: 80px;
+  }
   .producto p {
+    font-size: 0.85rem;
+  }
+
+  /* Opiniones */
+  .contenedor-opinion {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 0.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .op {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+  .op h4 {
+    font-size: 1rem;
+  }
+  .op .quote {
     font-size: 0.9rem;
   }
 
-  /* Opiniones: fuente un poco más pequeña */
-  .op h4 {
-    font-size: 1.1rem;
+  /* Instagram */
+  .instagram-section {
+    padding: 1rem 0.2rem 1rem 0.2rem;
   }
-  .op .quote {
-    font-size: 0.95rem;
+  .instagram-title {
+    font-size: 1.2rem;
   }
-
-  /* Destacados: tarjeta "más" no tan alta */
-  .destacados-grid {
-    grid-auto-rows: 180px;
-  }
-  .destacado-more {
-    height: auto;
-  }
-  .destacado-item {
-    width: 140px;
-  }
-  .destacado-item img {
-    width: 140px;
-    height: 140px;
+  .instagram-posts {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.2rem;
   }
 }
-/* ===== Responsive ===== */
-
-/* 1) Ajustes generales de vista */
-@media (max-width: 1200px) {
-    /* Carrusel un poco más bajo en tablets grandes */
-    .carousel-slide img {
-      height: 60vh;
-    }
+@media (max-width: 600px) {
+  .carousel-btn {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    top: 55%;
+    left: 0.5rem;
+    right: 0.5rem;
+    z-index: 20;
   }
-  @media (max-width: 768px) {
-    /* Carrusel aún más bajo en tablets/phones */
-    .carousel-slide img {
-      height: 40vh;
-    }
-    /* Overlay del hero más compacto */
-    .carousel-overlay {
-      padding: 1rem;
-    }
-    .carousel-title {
-      font-size: 2rem;
-    }
-    .carousel-cta {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
+  .carousel-btn.prev {
+    left: 0.5rem;
+    right: auto;
   }
-  
-  /* 2) Grids a 1 columna en pantallas pequeñas */
-  @media (max-width: 768px) {
-    .grid-contenedor,
-    .contenedor-opinion,
-    .destacados-grid,
-    /* Tarjeta "más" ocupa todo el ancho */
-    .destacado-more {
-      grid-column: 1 / -1;
-      grid-row: auto;
-      height: 180px;
-    }
+  .carousel-btn.next {
+    right: 0.5rem;
+    left: auto;
   }
-  
-  /* 3) Texto de secciones un poco más pequeño en móviles muy estrechos */
-  @media (max-width: 576px) {
-    .titulo-contenedor,
-    .instagram-title,
-    .grid-titulo {
-      font-size: 1.5rem;
-    }
-    .destacados-header .grid-subtitulo {
-      font-size: 0.9rem;
-    }
-    .producto img,
-    .destacado-item img {
-      width: 100%;
-      height: auto;
-    }
+}
+@media (max-width: 600px) {
+  .destacados-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+    padding: 1rem 0.3rem;
+    grid-auto-rows: 120px;
+    justify-items: center;
   }
- 
+  .destacado-item,
+  .destacado-item img {
+    width: 90px !important;
+    height: 90px !important;
+    font-size: 0.85rem;
+  }
+  .destacado-more {
+    grid-column: 1 / -1;
+    height: 110px;
+  }
+}
