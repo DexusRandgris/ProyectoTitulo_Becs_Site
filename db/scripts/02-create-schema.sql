@@ -284,7 +284,7 @@ INSERT INTO public.producto VALUES(8,'Almendra entera','100grs',1500,100,'produc
 
 
 -- AVELLANAS (Categoría 7)
-INSERT INTO public.producto VALUES(9,'Avellanas Europeas con Choc','100grs',2200,100,'Avellana_con_chocolate.jpg',7);
+INSERT INTO public.producto VALUES(9,'Avellanas Europeas con Choc','100grs',2200,100,'productos/Avellana_con_chocolate.jpg',7);
 INSERT INTO public.producto VALUES(10,'Avellanas Europeas Tostadas','100grs',2400,100,'productos/Avellana_tostada_europea.jpg',7);
 
 -- DÁTILES (Categoría 8)
@@ -371,9 +371,9 @@ INSERT INTO public.producto VALUES(61,'Laurel','50grs',1500,100,'productos/Laure
 INSERT INTO public.producto VALUES(62,'Perejil','50grs',350,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
 
 -- ALFAJOR (Categoría 26)
-INSERT INTO public.producto VALUES(63,'Alfajor Dulce de leche','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
-INSERT INTO public.producto VALUES(64,'Alfajor Dulce de leche(Srt)','2-uni',2000,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
-INSERT INTO public.producto VALUES(65,'Alfajor Dulce de leche(Fram)','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',25);
+INSERT INTO public.producto VALUES(63,'Alfajor Dulce de leche','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',26);
+INSERT INTO public.producto VALUES(64,'Alfajor Dulce de leche(Srt)','2-uni',2000,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',26);
+INSERT INTO public.producto VALUES(65,'Alfajor Dulce de leche(Fram)','C/U',1200,100,'productos/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not.jpg',26);
 
 
 --Poblar tabla cliente
@@ -420,3 +420,5 @@ SELECT setval('cliente_id_cliente_seq', COALESCE((SELECT MAX(id_cliente) FROM cl
 SELECT setval('rol_id_rol_seq', COALESCE((SELECT MAX(id_rol) FROM rol), 1), true);
 SELECT setval('estado_pedido_id_estado_pedido_seq', COALESCE((SELECT MAX(id_estado_pedido) FROM estado_pedido), 1), true);
 SELECT setval('metodo_pago_id_metodo_pago_seq', COALESCE((SELECT MAX(id_metodo_pago) FROM metodo_pago), 1), true);
+SELECT setval('pedido_id_pedido_seq', COALESCE((SELECT MAX(id_pedido) FROM pedido), 1), true);
+SELECT setval('detalle_pedido_id_detalle_pedido_seq', COALESCE((SELECT MAX(id_detalle_pedido) FROM detalle_pedido), 1), true);
