@@ -45,8 +45,8 @@ def quienessomos(request):
         send_mail(
             subject='Nuevo mensaje de contacto',
             message=cuerpo,
-            from_email='becsfrutos@gmail.com',
-            recipient_list=['becsfrutos@gmail.com'],
+            from_email='becsfrutosecos@gmail.com',
+            recipient_list=['becsfrutosecos@gmail.com'],
             fail_silently=False,
         )
         messages.success(request, '¡Tu mensaje fue enviado correctamente!')
