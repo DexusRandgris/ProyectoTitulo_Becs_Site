@@ -36,9 +36,9 @@
                            name="username"
                            id="id_username"
                            class="form-control"
-                           placeholder="Dirección de correo electrónico"
-                           required>
+                           placeholder="Dirección de correo electrónico">
                   </div>
+                  <div id="error-username" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
                 </div>
 
                 <div class="mb-4">
@@ -48,12 +48,12 @@
                            name="password"
                            id="id_password"
                            class="form-control"
-                           placeholder="Contraseña"
-                           required>
+                           placeholder="Contraseña">
                     <button type="button" id="togglePassword" class="btn btn-outline-secondary">
                       <i class="far fa-eye-slash"></i>
                     </button>
                   </div>
+                  <div id="error-password" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
                 </div>
 
                 <div class="d-flex justify-content-between">
@@ -88,6 +88,48 @@
       passwordField.setAttribute('type', type);
       this.querySelector('i').classList.toggle('fa-eye');
       this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    // Validación de formulario de inicio de sesión
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      let valid = true;
+      let emailError = '';
+      let passwordError = '';
+      const email = document.getElementById('id_username').value.trim();
+      const password = document.getElementById('id_password').value.trim();
+      const emailDiv = document.getElementById('error-username');
+      const passDiv = document.getElementById('error-password');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Limpiar errores previos
+      emailDiv.style.display = 'none';
+      emailDiv.textContent = '';
+      passDiv.style.display = 'none';
+      passDiv.textContent = '';
+
+      if (!email) {
+        valid = false;
+        emailError = 'El correo electrónico es obligatorio.';
+      } else if (!emailRegex.test(email)) {
+        valid = false;
+        emailError = 'El correo electrónico no es válido.';
+      }
+      if (!password) {
+        valid = false;
+        passwordError = 'La contraseña es obligatoria.';
+      }
+      // Mostrar errores debajo de cada campo solo si hay error
+      if (emailError) {
+        emailDiv.style.display = 'block';
+        emailDiv.textContent = emailError;
+      }
+      if (passwordError) {
+        passDiv.style.display = 'block';
+        passDiv.textContent = passwordError;
+      }
+      if (!valid) {
+        event.preventDefault();
+      }
     });
   </script>
 

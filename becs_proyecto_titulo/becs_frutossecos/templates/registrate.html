@@ -14,7 +14,7 @@
               <h2 class="m-0" style="color:#6B4F3A;">Regístrate</h2>
             </div>
             <div class="card-body" style="background-color:#A17E62;">
-              <form method="POST" id="registerForm">
+              <form method="POST" id="registerForm" novalidate>
                 {% csrf_token %}
 
                 {% if form.errors %}
@@ -36,21 +36,25 @@
                   <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
                   {{ form.nombre }}
                 </div>
+                <div id="error-nombre" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
                 
                 <div class="input-group mb-3">
                   <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
                   {{ form.apellido }}
                 </div>
+                <div id="error-apellido" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
                   {{ form.email }}
                 </div>
+                <div id="error-email" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text bg-white"><i class="fas fa-map-marker-alt"></i></span>
                   {{ form.direccion }}
                 </div>
+                <div id="error-direccion" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
 
                 <div class="input-group mb-3">
                   <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
@@ -59,6 +63,7 @@
                       <i class="far fa-eye-slash"></i>
                   </button>
                 </div>
+                <div id="error-password1" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
 
                 <div class="input-group mb-4">
                   <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
@@ -67,6 +72,7 @@
                       <i class="far fa-eye-slash"></i>
                   </button>
                 </div>
+                <div id="error-password2" class="invalid-feedback d-block" style="display:none; color:#B94A48; font-weight:bold; border-radius:4px; padding:4px 8px; margin-top:4px; min-height:0;"></div>
                 
                 <div class="d-grid">
                   <button type="submit" class="btn px-4" style="background-color:#6B4F3A; color:#FFF;">
@@ -99,7 +105,97 @@
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
     });
+
+    // Validación de formulario de registro
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      let valid = true;
+      // Obtener campos por nombre
+      const nombre = this.querySelector('[name="nombre"]')?.value.trim();
+      const apellido = this.querySelector('[name="apellido"]')?.value.trim();
+      const email = this.querySelector('[name="email"]')?.value.trim();
+      const direccion = this.querySelector('[name="direccion"]')?.value.trim();
+      const password1 = this.querySelector('[name="password1"]')?.value;
+      const password2 = this.querySelector('[name="password2"]')?.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const fields = ['nombre','apellido','email','direccion','password1','password2'];
+      // Limpiar errores previos
+      fields.forEach(f => {
+        const div = document.getElementById('error-' + f);
+        div.style.display = 'none';
+        div.textContent = '';
+      });
+      if (!nombre) {
+        valid = false;
+        const div = document.getElementById('error-nombre');
+        div.style.display = 'block';
+        div.textContent = 'El nombre es obligatorio.';
+      }
+      if (!apellido) {
+        valid = false;
+        const div = document.getElementById('error-apellido');
+        div.style.display = 'block';
+        div.textContent = 'El apellido es obligatorio.';
+      }
+      if (!email) {
+        valid = false;
+        const div = document.getElementById('error-email');
+        div.style.display = 'block';
+        div.textContent = 'El correo electrónico es obligatorio.';
+      } else if (!emailRegex.test(email)) {
+        valid = false;
+        const div = document.getElementById('error-email');
+        div.style.display = 'block';
+        div.textContent = 'El correo electrónico no es válido.';
+      }
+      if (!direccion) {
+        valid = false;
+        const div = document.getElementById('error-direccion');
+        div.style.display = 'block';
+        div.textContent = 'La dirección es obligatoria.';
+      }
+      if (!password1) {
+        valid = false;
+        const div = document.getElementById('error-password1');
+        div.style.display = 'block';
+        div.textContent = 'La contraseña es obligatoria.';
+      } else if (password1.length < 8) {
+        valid = false;
+        const div = document.getElementById('error-password1');
+        div.style.display = 'block';
+        div.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+      }
+      if (!password2) {
+        valid = false;
+        const div = document.getElementById('error-password2');
+        div.style.display = 'block';
+        div.textContent = 'Debe repetir la contraseña.';
+      } else if (password1 !== password2) {
+        valid = false;
+        const div = document.getElementById('error-password2');
+        div.style.display = 'block';
+        div.textContent = 'Las contraseñas no coinciden.';
+      }
+      if (!valid) {
+        event.preventDefault();
+      }
+    });
   </script>
 </body>
 </html>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.invalid-feedback {
+    color: #B94A48;
+    background: #F8D7DA;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 4px;
+    display: none;
+}
+.invalid-feedback.show {
+    display: block;
+}
+</style>
 {% endblock %}
